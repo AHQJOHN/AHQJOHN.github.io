@@ -1,0 +1,35 @@
+portfolio-appwrite/
+├── HTML Pages
+│   ├── index.html
+│   ├── about.html
+│   ├── research.html
+│   ├── projects.html
+│   ├── products.html
+│   ├── skills.html
+│   ├── contact.html
+│   ├── login.html
+│   ├── user-dashboard.html
+│   └── admin.html
+│
+├── CSS & JavaScript
+│   ├── styles.css
+│   ├── script.js
+│   ├── admin.js
+│   ├── appwrite-config.js     ← NEW (replaces firebase-config.js)
+│   ├── user-auth.js           ← UPDATED for Appwrite
+│   └── seo-meta.js
+│
+├── Appwrite Configuration
+│   ├── appwrite.json          ← NEW
+│   └── docker-compose.yml     ← NEW (for self-hosting)
+│
+├── Windows Scripts
+│   ├── setup-appwrite-windows.bat   ← NEW
+│   ├── install-appwrite-local.bat   ← NEW
+│   ├── test-local.bat
+│   └── deploy-github.bat
+│
+└── Documentation
+    ├── README-APPWRITE.md      ← NEW
+    ├── APPWRITE-SETUP.md       ← NEW
+    └── DEPLOYMENT-CHECKLIST.md

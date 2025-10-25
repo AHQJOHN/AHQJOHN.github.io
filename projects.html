@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industrial Projects - Md. Ashfaqul Haque</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="seo-meta.js"></script>
+    <!-- Hide media controls by default -->
+    <style>
+        .media-controls {
+            display: none;
+        }
+        
+        body.admin-mode .media-controls {
+            display: flex !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h2>Md. Ashfaqul Haque</h2>
+                <p class="subtitle">AI/ML Engineer</p>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="projects.html" class="active">Projects</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="skills.html">Skills</a></li>
+                <li><a href="contact.html" class="cta-btn">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Industrial AI Projects</h1>
+            <p>Real-world deployments across surveillance, logistics, manufacturing, and smart systems</p>
+        </div>
+    </section>
+
+    <!-- Projects Grid -->
+    <section class="projects-detail-section">
+        <div class="container">
+            
+            <!-- Project 1: ANPR -->
+            <div class="project-detail-card" id="anpr">
+                <div class="project-detail-header">
+                    <h2>ANPR: Vehicle & Driver Verification System</h2>
+                    <div class="project-meta">
+                        <span class="meta-item"><i class="fas fa-calendar"></i> 2023-2024</span>
+                        <span class="meta-item"><i class="fas fa-building"></i> Bondstein Technologies</span>
+                        <span class="meta-item"><i class="fas fa-map-marker-alt"></i> Bangladesh</span>
+                    </div>
+                </div>
+                <div class="project-detail-body">
+                    <div class="project-description">
+                        <h3>Overview</h3>
+                        <p>End-to-end Automatic Number Plate Recognition system specifically designed for Bengali license plates, integrating vehicle detection, plate reading, and driver face recognition with comprehensive dashboard analytics.</p>
+                        
+                        <h3>Technical Challenges</h3>
+                        <ul class="challenge-list">
+                            <li><strong>Low OCR Accuracy on Bangla Plates:</strong> Unique fonts and formats with no pretrained models available</li>
+                            <li><strong>YOLO Model Failure:</strong> Custom YOLO-based models failed on increased variety of Bangla plate numbers</li>
+                            <li><strong>Hardware Limitations:</strong> PaddleOCR v5 lacked GPU support for specific NVIDIA cards</li>
+                            <li><strong>Data Annotation Scale:</strong> Required 15,000+ annotations with platform limitations (10K per account)</li>
+                            <li><strong>Night-time Visibility:</strong> Number plates hardly visible in low-light conditions</li>
+                            <li><strong>Camera Integration:</strong> RTSP URL configuration and camera angle optimization</li>
+                            <li><strong>Speed Detection:</strong> Recognition at low frame rates for fast-moving vehicles</li>
+                        </ul>
+
+                        <h3>Solutions Implemented</h3>
+                        <ul class="solution-list">
+                            <li><strong>Custom PaddleOCR Model:</strong> Trained specialized model achieving ~94% accuracy on Bengali plates</li>
+                            <li><strong>Multi-level Filtering:</strong> Syntactic and regional rule-based output cleaning system</li>
+                            <li><strong>CPU Optimization:</strong> Deployed CPU-optimized version to bypass GPU limitations</li>
+                            <li><strong>Annotation Strategy:</strong> Created multiple temporary accounts, maintained tracking system for data merging</li>
+                            <li><strong>Lighting Setup:</strong> Strategic light installation at entry and exit points</li>
+                            <li><strong>On-site Data Collection:</strong> Manual collection after server setup for model fine-tuning</li>
+                            <li><strong>Camera Optimization:</strong> Collaborated with IT team for RTSP configuration and angle adjustments</li>
+                        </ul>
+
+                        <h3>Key Features</h3>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <i class="fas fa-camera"></i>
+                                <p>Real-time vehicle detection from live RTSP feeds</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-text-width"></i>
+                                <p>Custom Bengali OCR with 94% accuracy</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-user-shield"></i>
+                                <p>Driver face recognition integration</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-chart-bar"></i>
+                                <p>Dashboard with search, filter, and analytics</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-cloud"></i>
+                                <p>Cloud and on-premise deployment options</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-globe"></i>
+                                <p>Scalable for ANY country license plates</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tech-stack-detail">
+                        <h3>Technologies Used</h3>
+                        <div class="tech-tags-large">
+                            <span>PaddleOCR</span>
+                            <span>YOLO</span>
+                            <span>OpenCV</span>
+                            <span>Python</span>
+                            <span>RTSP</span>
+                            <span>Face Recognition</span>
+                            <span>Data Annotation</span>
+                            <span>Dashboard Development</span>
+                        </div>
+                    </div>
+
+                    <!-- Media Section with localStorage -->
+                    <div class="project-media-section">
+                        <h3>Project Media</h3>
+                        <div class="media-controls">
+                            <button class="btn btn-small" onclick="openMediaModal('anpr', 'video')">
+                                <i class="fas fa-video"></i> Add Video
+                            </button>
+                            <button class="btn btn-small" onclick="openMediaModal('anpr', 'image')">
+                                <i class="fas fa-image"></i> Add Image
+                            </button>
+                        </div>
+                        <div class="media-gallery" id="anpr-media"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2: Container Tracking -->
+            <div class="project-detail-card" id="container">
+                <div class="project-detail-header">
+                    <h2>Track My Container (KDS Logistics)</h2>
+                    <div class="project-meta">
+                        <span class="meta-item"><i class="fas fa-calendar"></i> 2023-2024</span>
+                        <span class="meta-item"><i class="fas fa-building"></i> KDS Logistics</span>
+                        <span class="meta-item"><i class="fas fa-box"></i> 6000+ Containers</span>
+                    </div>
+                </div>
+                <div class="project-detail-body">
+                    <div class="project-description">
+                        <h3>Overview</h3>
+                        <p>Real-time container tracking and management system for logistics depot handling 6000+ containers with 3000+ daily operations. Hybrid IoT approach combining GPS, SONAR, height sensors with AI-powered OCR for container ID recognition.</p>
+                        
+                        <h3>Technical Challenges & Solutions</h3>
+                        
+                        <div class="challenge-solution-block">
+                            <h4><i class="fas fa-exclamation-triangle"></i> RTSP Stream Instability</h4>
+                            <p><strong>Challenge:</strong> RTSP feeds from stacker cranes frequently froze or jittered, especially on Jetson Orin Nano hardware.</p>
+                            <p><strong>Solution:</strong> Implemented frame-queueing system with Kalman filtering for stabilization. Tuned Jetson Orin Nano specifically for stream handling optimization.</p>
+                        </div>
+
+                        <div class="challenge-solution-block">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Fisheye Lens Distortion</h4>
+                            <p><strong>Challenge:</strong> Severe fisheye distortion from crane-mounted cameras prevented accurate container ID detection.</p>
+                            <p><strong>Solution:</strong> Applied pre-calibrated undistortion using OpenCV intrinsic matrix and distortion coefficients.</p>
+                        </div>
+
+                        <div class="challenge-solution-block">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Vertically Oriented Container IDs</h4>
+                            <p><strong>Challenge:</strong> Containers stacked with vertical IDs caused OCR to fail completely.</p>
+                            <p><strong>Solution:</strong> Built vertical-to-horizontal character rearrangement module (ver_to_hor.py) with YOLO to reassemble text horizontally.</p>
+                        </div>
+
+                        <div class="challenge-solution-block">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Faded or Damaged Text</h4>
+                            <p><strong>Challenge:</strong> Old containers had degraded markings leading to OCR misreads.</p>
+                            <p><strong>Solution:</strong> Added ISO 6346 validation with intelligent error correction (character substitution, prefix validation).</p>
+                        </div>
+
+                        <div class="challenge-solution-block">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Gate-Side Infrastructure</h4>
+                            <p><strong>Challenge:</strong> Camera misplacement, poor LAN connections, inadequate lighting, no backup power.</p>
+                            <p><strong>Solution:</strong> Complete infrastructure overhaul: repositioned cameras with site surveys, upgraded LAN cabling, improved lighting, connected to emergency power grid.</p>
+                        </div>
+
+                        <h3>System Features</h3>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <i class="fas fa-map-marked-alt"></i>
+                                <p>Real-time GPS tracking and movement updates</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-microchip"></i>
+                                <p>Hybrid IoT with GPS, SONAR, height sensors</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-camera-retro"></i>
+                                <p>AI camera with automatic OCR reading</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-warehouse"></i>
+                                <p>Depot space optimization and crane efficiency</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-plug"></i>
+                                <p>Infrastructure-less scalable deployment</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-double"></i>
+                                <p>ISO 6346 validation and error correction</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tech-stack-detail">
+                        <h3>Technologies Used</h3>
+                        <div class="tech-tags-large">
+                            <span>Jetson Orin Nano</span>
+                            <span>OpenCV</span>
+                            <span>Kalman Filtering</span>
+                            <span>YOLO</span>
+                            <span>OCR</span>
+                            <span>GPS/SONAR</span>
+                            <span>ISO 6346</span>
+                            <span>RTSP</span>
+                        </div>
+                    </div>
+
+                    <div class="project-media-section">
+                        <h3>Project Media</h3>
+                        <div class="media-controls">
+                            <button class="btn btn-small" onclick="openMediaModal('container', 'video')">
+                                <i class="fas fa-video"></i> Add Video
+                            </button>
+                            <button class="btn btn-small" onclick="openMediaModal('container', 'image')">
+                                <i class="fas fa-image"></i> Add Image
+                            </button>
+                        </div>
+                        <div class="media-gallery" id="container-media"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3: Smart Showroom -->
+            <div class="project-detail-card" id="showroom">
+                <div class="project-detail-header">
+                    <h2>Smart Showroom Monitoring</h2>
+                    <div class="project-meta">
+                        <span class="meta-item"><i class="fas fa-calendar"></i> 2023</span>
+                        <span class="meta-item"><i class="fas fa-store"></i> Retail Analytics</span>
+                    </div>
+                </div>
+                <div class="project-detail-body">
+                    <div class="project-description">
+                        <h3>Overview</h3>
+                        <p>Data-driven customer behavior analysis system transforming physical showrooms into intelligent spaces with real-time heatmaps, customer journey mapping, and product interaction analytics.</p>
+                        
+                        <h3>Challenges & Solutions</h3>
+                        <ul class="challenge-list">
+                            <li><strong>Deployment Issues:</strong> NVR/CCTV misconfigurations and angle misalignments causing pipeline instability - Resolved through site adjustments and RTSP reconfiguration</li>
+                            <li><strong>Camera Optimization:</strong> Fixed camera positions and angles for optimal coverage</li>
+                        </ul>
+
+                        <h3>Innovations Beyond Scope</h3>
+                        <ul class="solution-list">
+                            <li>Customer-product interaction analysis for engagement insights</li>
+                            <li>Real-time heatmap generation for traffic pattern visualization</li>
+                            <li>Individual customer journey tracking with dwell time analysis</li>
+                        </ul>
+
+                        <h3>Key Capabilities</h3>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <i class="fas fa-fire"></i>
+                                <p>Intelligent heatmaps showing high-traffic areas</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-route"></i>
+                                <p>Individual customer journey mapping</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-hand-pointer"></i>
+                                <p>Product interaction tracking and analysis</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-clock"></i>
+                                <p>Real-time dwell time and engagement metrics</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-chart-pie"></i>
+                                <p>Bottleneck identification and flow optimization</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-users"></i>
+                                <p>Personalized customer experience insights</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tech-stack-detail">
+                        <h3>Technologies Used</h3>
+                        <div class="tech-tags-large">
+                            <span>Computer Vision</span>
+                            <span>Heatmap Analytics</span>
+                            <span>Customer Tracking</span>
+                            <span>NVR Integration</span>
+                            <span>Real-time Processing</span>
+                            <span>RTSP</span>
+                        </div>
+                    </div>
+
+                    <div class="project-media-section">
+                        <h3>Project Media</h3>
+                        <div class="media-controls">
+                            <button class="btn btn-small" onclick="openMediaModal('showroom', 'video')">
+                                <i class="fas fa-video"></i> Add Video
+                            </button>
+                            <button class="btn btn-small" onclick="openMediaModal('showroom', 'image')">
+                                <i class="fas fa-image"></i> Add Image
+                            </button>
+                        </div>
+                        <div class="media-gallery" id="showroom-media"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 4: BAT Leaf SOP -->
+            <div class="project-detail-card" id="bat">
+                <div class="project-detail-header">
+                    <h2>BAT AI Leaf SOP Checker</h2>
+                    <div class="project-meta">
+                        <span class="meta-item"><i class="fas fa-calendar"></i> 2023-2024</span>
+                        <span class="meta-item"><i class="fas fa-industry"></i> Manufacturing</span>
+                        <span class="meta-item"><i class="fas fa-building"></i> British American Tobacco</span>
+                    </div>
+                </div>
+                <div class="project-detail-body">
+                    <div class="project-description">
+                        <h3>Overview</h3>
+                        <p>AI-powered Standard Operating Procedure compliance system automating leaf buying process monitoring. Ensures strict adherence to SOPs with real-time tracking across bale entry, inspection, and weighing stages.</p>
+                        
+                        <h3>Complex Technical Challenges</h3>
+                        
+                        <div class="challenge-solution-block">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Unique Bale Tracking Across Multiple Steps</h4>
+                            <p><strong>Challenge:</strong> Bales difficult to track across entry, inspection, and weighing stages with consistent IDs.</p>
+                            <p><strong>Solution:</strong> Multi-camera tracker with DeepSORT-inspired IoU matching, ensuring persistent IDs across stages (bale_count.json, state management).</p>
+                        </div>
+
+                        <div class="challenge-solution-block">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Worker Mis-alerts in Weighing Area</h4>
+                            <p><strong>Challenge:</strong> Workers frequently entered restricted weighing zones triggering false alerts (80%+ false positive rate).</p>
+                            <p><strong>Solution:</strong> Custom detection logic checking IoU overlap between humans and bale zones with persistence rules, reducing mis-alerts by 80%.</p>
+                        </div>
+
+                        <div class="challenge-solution-block">
+                            <h4><i class="fas fa-exclamation-triangle"></i> RTSP Stream Jitter</h4>
+                            <p><strong>Challenge:</strong> OpenCV pipeline produced unstable frames affecting detection accuracy.</p>
+                            <p><strong>Solution:</strong> Frame queueing system with Kalman filtering for smooth stream processing.</p>
+                        </div>
+
+                        <div class="challenge-solution-block">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Manual Annotation Inefficiency</h4>
+                            <p><strong>Challenge:</strong> Extracting bale images for training annotations extremely time-consuming.</p>
+                            <p><strong>Solution:</strong> Developed PC-based auto-extraction tool saving annotated frames with timestamps.</p>
+                        </div>
+
+                        <h3>Impact & Results</h3>
+                        <div class="impact-metrics">
+                            <div class="metric-box">
+                                <span class="metric-value">80%</span>
+                                <span class="metric-label">False Alert Reduction</span>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-value">100%</span>
+                                <span class="metric-label">SOP Compliance Tracking</span>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-value">3</span>
+                                <span class="metric-label">Process Stages Monitored</span>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-value">Real-time</span>
+                                <span class="metric-label">Alert System</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tech-stack-detail">
+                        <h3>Technologies Used</h3>
+                        <div class="tech-tags-large">
+                            <span>DeepSORT</span>
+                            <span>Multi-Object Tracking</span>
+                            <span>IoU Matching</span>
+                            <span>RTSP Processing</span>
+                            <span>State Management</span>
+                            <span>Kalman Filtering</span>
+                            <span>Python</span>
+                        </div>
+                    </div>
+
+                    <div class="project-media-section">
+                        <h3>Project Media</h3>
+                        <div class="media-controls">
+                            <button class="btn btn-small" onclick="openMediaModal('bat', 'video')">
+                                <i class="fas fa-video"></i> Add Video
+                            </button>
+                            <button class="btn btn-small" onclick="openMediaModal('bat', 'image')">
+                                <i class="fas fa-image"></i> Add Image
+                            </button>
+                        </div>
+                        <div class="media-gallery" id="bat-media"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 5: Unilever Surveillance -->
+            <div class="project-detail-card" id="unilever">
+                <div class="project-detail-header">
+                    <h2>Unilever Argus Automata (KGF Smart Surveillance)</h2>
+                    <div class="project-meta">
+                        <span class="meta-item"><i class="fas fa-calendar"></i> 2023-2024</span>
+                        <span class="meta-item"><i class="fas fa-building"></i> Unilever</span>
+                        <span class="meta-item"><i class="fas fa-camera"></i> 90+ Cameras</span>
+                    </div>
+                </div>
+                <div class="project-detail-body">
+                    <div class="project-description">
+                        <h3>Overview</h3>
+                        <p>Comprehensive multi-module AI surveillance system featuring intrusion detection, PPE monitoring, vehicle speed tracking, and collision prevention for warehouse safety and security.</p>
+                        
+                        <h3>Module 1: Intrusion Detection</h3>
+                        <div class="module-detail">
+                            <p><strong>Challenge:</strong> People outside ROIs misdetected as intruders causing alert fatigue.</p>
+                            <p><strong>Solution:</strong> Refined logic triggering alerts only when complete bounding box lies inside ROI, eliminating false alarms.</p>
+                        </div>
+
+                        <h3>Module 2: PPE Detection System</h3>
+                        <div class="module-detail">
+                            <h4>System Architecture Design</h4>
+                            <p><strong>Challenge:</strong> Detecting PPE consistently in dynamic warehouses with occlusions and lighting variations.</p>
+                            <p><strong>Solution:</strong> Modular YOLOv8 + DeepSORT pipeline with IoU-based PPE-human association and 30-frame temporal persistence achieving >80% MOTA.</p>
+                            
+                            <h4>Key Optimizations</h4>
+                            <ul class="solution-list">
+                                <li><strong>Refactored Tracking:</strong> Moved from centroid tracker to DeepSORT, eliminating negative classes</li>
+                                <li><strong>Alert Optimization:</strong> Prioritized only violations (no-helmet/no-vest) with 5-min cooldown per worker</li>
+                                <li><strong>Flicker Elimination:</strong> 10-sec consistency buffer with deque smoothing across 300 frames</li>
+                                <li><strong>Adaptive Thresholds:</strong> Per-class confidence (0.6 for violations, 0.5 for humans)</li>
+                                <li><strong>Human-first Filtering:</strong> IoU > 0.1 requirement between PPE and person to eliminate false detections</li>
+                                <li><strong>SAHI Optimization:</strong> Tuned slice size (1280×1280), overlap (0.1), TensorRT export for real-time processing</li>
+                            </ul>
+                        </div>
+
+                        <h3>Module 3: Vehicle Detection & Speed Estimation</h3>
+                        <div class="module-detail">
+                            <h4>Technical Innovations</h4>
+                            <ul class="solution-list">
+                                <li><strong>End-to-End Pipeline:</strong> YOLO + ByteTrack + homography for robust detection, tracking, and speed calculation</li>
+                                <li><strong>Jitter Reduction:</strong> ByteTrack integration improved IDF1 by 20% for low-FPS feeds</li>
+                                <li><strong>Speed Calculation:</strong> Kalman filter smoothing + curvature checks removed ~60% noise</li>
+                                <li><strong>Perspective Correction:</strong> Multi-plane homography with auto-calibration for multi-level warehouses</li>
+                            </ul>
+                        </div>
+
+                        <h3>Module 4: Warehouse Collision Detection</h3>
+                        <div class="module-detail">
+                            <p><strong>Features:</strong> Real-time proximity tracking between forklifts and humans, driver presence detection, idle vehicle logic, speed monitoring (converted to km/h).</p>
+                            <p><strong>Optimization:</strong> Median filtering, frame buffers, state persistence timers, per-class confidence thresholds for reduced false positives under occlusion/low-light.</p>
+                        </div>
+
+                        <h3>System Capabilities</h3>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <p>Access control with facial recognition</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-border-style"></i>
+                                <p>Boundary security for throw/go-over detection</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-hard-hat"></i>
+                                <p>PPE monitoring with >80% MOTA accuracy</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-warehouse"></i>
+                                <p>Helmet use tracking in stacking alleys</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p>Collision prevention for forklifts and humans</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <p>Over-speeding and unsafe behavior detection</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tech-stack-detail">
+                        <h3>Technologies Used</h3>
+                        <div class="tech-tags-large">
+                            <span>YOLOv8</span>
+                            <span>DeepSORT</span>
+                            <span>ByteTrack</span>
+                            <span>Homography</span>
+                            <span>TensorRT</span>
+                            <span>SAHI</span>
+                            <span>Kalman Filtering</span>
+                            <span>Multi-Camera</span>
+                        </div>
+                    </div>
+
+                    <div class="project-media-section">
+                        <h3>Project Media</h3>
+                        <div class="media-controls">
+                            <button class="btn btn-small" onclick="openMediaModal('unilever', 'video')">
+                                <i class="fas fa-video"></i> Add Video
+                            </button>
+                            <button class="btn btn-small" onclick="openMediaModal('unilever', 'image')">
+                                <i class="fas fa-image"></i> Add Image
+                            </button>
+                        </div>
+                        <div class="media-gallery" id="unilever-media"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 6: Staircase Safety -->
+            <div class="project-detail-card" id="staircase">
+                <div class="project-detail-header">
+                    <h2>Unilever Smart Staircase Safety</h2>
+                    <div class="project-meta">
+                        <span class="meta-item"><i class="fas fa-calendar"></i> 2024</span>
+                        <span class="meta-item"><i class="fas fa-building"></i> Unilever</span>
+                    </div>
+                </div>
+                <div class="project-detail-body">
+                    <div class="project-description">
+                        <h3>Overview</h3>
+                        <p>AI-powered staircase safety monitoring system detecting unsafe behaviors including improper railing usage and phone usage while climbing stairs using advanced pose landmark analysis.</p>
+                        
+                        <h3>Technical Challenges & Solutions</h3>
+                        
+                        <div class="challenge-solution-block">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Segmentation Failures</h4>
+                            <p><strong>Challenge:</strong> Overlap between railing and human body confused standard detection algorithms.</p>
+                            <p><strong>Solution:</strong> Used pose landmarks (wrists, fingers, ears) to accurately detect railing contact, eliminating segmentation confusion.</p>
+                        </div>
+
+                        <div class="challenge-solution-block">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Single-Person Limitation</h4>
+                            <p><strong>Challenge:</strong> Mediapipe tracked only one person at a time in multi-person scenarios.</p>
+                            <p><strong>Solution:</strong> YOLO pre-processing detects multiple persons, feeding each separately to Mediapipe for individual pose analysis.</p>
+                        </div>
+
+                        <h3>System Features</h3>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <i class="fas fa-hands"></i>
+                                <p>Railing grip detection via pose landmarks</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-mobile-alt"></i>
+                                <p>Phone usage detection while on stairs</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-users"></i>
+                                <p>Multi-person simultaneous tracking</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-building"></i>
+                                <p>Multi-floor coverage with centralized AI</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-bell"></i>
+                                <p>Real-time alerts via web dashboard</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-video"></i>
+                                <p>Live video analysis with NVR storage</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tech-stack-detail">
+                        <h3>Technologies Used</h3>
+                        <div class="tech-tags-large">
+                            <span>Mediapipe</span>
+                            <span>Pose Landmarks</span>
+                            <span>YOLO</span>
+                            <span>Multi-Person Tracking</span>
+                            <span>Safety Monitoring</span>
+                            <span>Behavior Analysis</span>
+                        </div>
+                    </div>
+
+                    <div class="project-media-section">
+                        <h3>Project Media</h3>
+                        <div class="media-controls">
+                            <button class="btn btn-small" onclick="openMediaModal('staircase', 'video')">
+                                <i class="fas fa-video"></i> Add Video
+                            </button>
+                            <button class="btn btn-small" onclick="openMediaModal('staircase', 'image')">
+                                <i class="fas fa-image"></i> Add Image
+                            </button>
+                        </div>
+                        <div class="media-gallery" id="staircase-media"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Projects Summary -->
+            <div class="additional-projects">
+                <h2 class="section-title">Additional Projects</h2>
+                <div class="small-project-grid">
+                    <div class="small-project-card">
+                        <h3>Face Recognition System (FaceX Pro)</h3>
+                        <p>Real-time multi-person facial recognition with whitelist/blacklist, VIP detection, instant alerts via SMS/Email.</p>
+                        <div class="tech-tags-small">
+                            <span>InsightFace</span>
+                            <span>Real-time</span>
+                            <span>Alert System</span>
+                        </div>
+                        <button class="btn btn-small" onclick="openMediaModal('facex', 'video')">Add Media</button>
+                        <div class="media-gallery" id="facex-media"></div>
+                    </div>
+
+                    <div class="small-project-card">
+                        <h3>Manufacturing Quality Predictive Analysis</h3>
+                        <p>Data-driven ML framework predicting quality issues, reducing scrap/rework costs, improving production yield.</p>
+                        <div class="tech-tags-small">
+                            <span>ML</span>
+                            <span>Predictive Modeling</span>
+                            <span>Quality Control</span>
+                        </div>
+                        <button class="btn btn-small" onclick="openMediaModal('manufacturing', 'video')">Add Media</button>
+                        <div class="media-gallery" id="manufacturing-media"></div>
+                    </div>
+
+                    <div class="small-project-card">
+                        <h3>TV Habit Monitoring System</h3>
+                        <p>Set-top box integration with audio processing for viewing behavior analysis, channel detection, user recognition.</p>
+                        <div class="tech-tags-small">
+                            <span>Audio Processing</span>
+                            <span>Behavior Analysis</span>
+                            <span>Pattern Recognition</span>
+                        </div>
+                        <button class="btn btn-small" onclick="openMediaModal('tvmonitor', 'video')">Add Media</button>
+                        <div class="media-gallery" id="tvmonitor-media"></div>
+                    </div>
+
+                    <div class="small-project-card">
+                        <h3>Deepfake Production System</h3>
+                        <p>2600+ Bengali deepfake videos with custom voice cloning and lipsync generation for creative applications.</p>
+                        <div class="tech-tags-small">
+                            <span>Deepfake</span>
+                            <span>Voice Clone</span>
+                            <span>Lipsync</span>
+                        </div>
+                        <button class="btn btn-small" onclick="openMediaModal('deepfake', 'video')">Add Media</button>
+                        <div class="media-gallery" id="deepfake-media"></div>
+                    </div>
+
+                    <div class="small-project-card">
+                        <h3>Central SOP Monitoring</h3>
+                        <p>17 locations, 150+ cameras, gesture tracking, multi-cam object tracking for 24/7 operations.</p>
+                        <div class="tech-tags-small">
+                            <span>Multi-Camera</span>
+                            <span>Gesture Recognition</span>
+                            <span>Day/Night</span>
+                        </div>
+                        <button class="btn btn-small" onclick="openMediaModal('sop', 'video')">Add Media</button>
+                        <div class="media-gallery" id="sop-media"></div>
+                    </div>
+
+                    <div class="small-project-card">
+                        <h3>Bank/ATM Monitoring</h3>
+                        <p>AI-powered activity detection, intrusion alerts, vandalism detection for financial institutions.</p>
+                        <div class="tech-tags-small">
+                            <span>Activity Detection</span>
+                            <span>Security</span>
+                            <span>Real-time</span>
+                        </div>
+                        <button class="btn btn-small" onclick="openMediaModal('atm', 'video')">Add Media</button>
+                        <div class="media-gallery" id="atm-media"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Need a Custom AI Solution?</h2>
+            <p>Contact me for industrial AI deployments, computer vision systems, and edge computing solutions</p>
+            <a href="contact.html" class="btn btn-primary">Start Your Project</a>
+        </div>
+    </section>
+
+    <!-- Media Modal -->
+    <div id="mediaModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeMediaModal()">&times;</span>
+            <h3 id="modalTitle">Add Media</h3>
+            <form id="mediaForm">
+                <div class="form-group">
+                    <label for="mediaUrl">Google Drive URL:</label>
+                    <input type="url" id="mediaUrl" placeholder="https://drive.google.com/file/d/..." required>
+                    <small>Paste the sharing link from Google Drive</small>
+                </div>
+                <div class="form-group">
+                    <label for="mediaCaption">Caption (Optional):</label>
+                    <textarea id="mediaCaption" placeholder="Brief description..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Media</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Md. Ashfaqul Haque</h3>
+                    <p>Senior AI/ML Engineer specializing in Computer Vision, Deep Learning, and Edge Deployment</p>
+                    <div class="social-links">
+                        <a href="https://github.com/AHQJOHN" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/ashfaqul-haque-john" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://www.researchgate.net/profile/Md-Ashfaqul-Haque" target="_blank"><i class="fab fa-researchgate"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="research.html">Research</a></li>
+                        <li><a href="projects.html">Projects</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> ahq.john@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +880 1792-895969</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Dhaka, Bangladesh</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Md. Ashfaqul Haque. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+<!-- Appwrite SDK for Admin Check -->
+<script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
+<script>
+    // Initialize Appwrite
+    const client = new Appwrite.Client();
+    client
+        .setEndpoint('https://cloud.appwrite.io/v1')
+        .setProject('68f563b4000a7ec27b68');
+    
+    const account = new Appwrite.Account(client);
+    const ADMIN_EMAIL = 'ahq.john@gmail.com';
+
+    // Check if user is admin and show/hide media controls
+    (async () => {
+        try {
+            const user = await account.get();
+            
+            // If user is admin, enable admin mode
+            if (user && user.email === ADMIN_EMAIL) {
+                // Add admin-mode class to body
+                document.body.classList.add('admin-mode');
+                
+                // Add admin indicator badge
+                const adminBadge = document.createElement('div');
+                adminBadge.style.cssText = 'position: fixed; top: 10px; right: 10px; background: #28a745; color: white; padding: 0.5rem 1rem; border-radius: 5px; z-index: 1000; font-weight: 600; box-shadow: 0 2px 10px rgba(0,0,0,0.2);';
+                adminBadge.innerHTML = '<i class="fas fa-user-shield"></i> Admin Mode';
+                document.body.appendChild(adminBadge);
+                
+                console.log('✅ Admin mode enabled');
+            } else {
+                console.log('👤 Logged in as regular user');
+            }
+        } catch (error) {
+            // User not logged in - media controls remain hidden
+            console.log('👁️ Public visitor mode');
+        }
+    })();
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

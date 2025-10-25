@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Appwrite Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
+        .status { padding: 20px; margin: 20px 0; border-radius: 5px; }
+        .success { background: #d4edda; border: 1px solid #28a745; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #dc3545; color: #721c24; }
+        .info { background: #d1ecf1; border: 1px solid #17a2b8; color: #0c5460; }
+        pre { background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Appwrite Connection Test</h1>
+    
+    <div id="status" class="status info">
+        <strong>Step 1:</strong> Loading Appwrite SDK...<br>
+        <small>Please wait...</small>
+    </div>
+    
+    <div id="result"></div>
+    
+    <div style="margin-top: 20px;">
+        <button onclick="testConnection()">🔄 Retry Connection</button>
+        <button onclick="showDetails()">📋 Show Details</button>
+    </div>
+    
+    <div id="details" style="margin-top: 20px;"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
+    <script>
+        const statusDiv = document.getElementById('status');
+        const resultDiv = document.getElementById('result');
+        const detailsDiv = document.getElementById('details');
+        
+        // Configuration
+        const config = {
+            endpoint: 'https://cloud.appwrite.io/v1',
+            projectId: '68f563b4000a7ec27b68',
+            databaseId: 'portfolio_db'
+        };
+        
+        let client, account, databases;
+        
+        // Initialize Appwrite
+        function initAppwrite() {
+            try {
+                statusDiv.innerHTML = '<strong>Step 2:</strong> Initializing Appwrite client...';
+                statusDiv.className = 'status info';
+                
+                // Check if Appwrite SDK loaded
+                if (typeof Appwrite === 'undefined') {
+                    throw new Error('Appwrite SDK not loaded! Check your internet connection.');
+                }
+                
+                client = new Appwrite.Client();
+                client
+                    .setEndpoint(config.endpoint)
+                    .setProject(config.projectId);
+                
+                account = new Appwrite.Account(client);
+                databases = new Appwrite.Databases(client);
+                
+                statusDiv.innerHTML = '<strong>Step 3:</strong> Appwrite SDK loaded successfully!<br><small>Testing connection...</small>';
+                
+                // Test connection
+                setTimeout(testConnection, 1000);
+                
+            } catch (error) {
+                statusDiv.innerHTML = '<strong>❌ Error:</strong> ' + error.message;
+                statusDiv.className = 'status error';
+                console.error('Initialization error:', error);
+            }
+        }
+        
+        // Test connection
+        async function testConnection() {
+            try {
+                statusDiv.innerHTML = '<strong>Step 4:</strong> Testing connection to Appwrite Cloud...';
+                statusDiv.className = 'status info';
+                
+                // Try to get account (will fail if not logged in, but that's OK)
+                const user = await account.get();
+                
+                // User is logged in
+                statusDiv.innerHTML = '✅ <strong>SUCCESS!</strong> Connected to Appwrite Cloud';
+                statusDiv.className = 'status success';
+                
+                resultDiv.innerHTML = `
+                    <div class="status success">
+                        <strong>You are logged in as:</strong><br>
+                        Email: ${user.email}<br>
+                        Name: ${user.name}<br>
+                        User ID: ${user.$id}
+                    </div>
+                `;
+                
+            } catch (error) {
+                if (error.code === 401) {
+                    // Not logged in - this is expected and OK
+                    statusDiv.innerHTML = '✅ <strong>CONNECTION SUCCESSFUL!</strong>';
+                    statusDiv.className = 'status success';
+                    
+                    resultDiv.innerHTML = `
+                        <div class="status info">
+                            <strong>Connection Status:</strong> Connected to Appwrite Cloud<br>
+                            <strong>Project ID:</strong> ${config.projectId}<br>
+                            <strong>Database ID:</strong> ${config.databaseId}<br>
+                            <strong>User Status:</strong> Not logged in (this is normal)<br><br>
+                            <strong>✅ Your Appwrite is working correctly!</strong><br>
+                            <small>You can now use the login page.</small>
+                        </div>
+                    `;
+                } else {
+                    // Real error
+                    statusDiv.innerHTML = '❌ <strong>CONNECTION FAILED</strong>';
+                    statusDiv.className = 'status error';
+                    
+                    resultDiv.innerHTML = `
+                        <div class="status error">
+                            <strong>Error Code:</strong> ${error.code || 'Unknown'}<br>
+                            <strong>Error Type:</strong> ${error.type || 'Unknown'}<br>
+                            <strong>Message:</strong> ${error.message}<br><br>
+                            <strong>Possible causes:</strong><br>
+                            • Wrong Project ID<br>
+                            • Project doesn't exist<br>
+                            • Network/firewall blocking connection<br>
+                            • CORS issue (shouldn't happen with localhost)
+                        </div>
+                    `;
+                }
+                
+                console.error('Connection test error:', error);
+            }
+        }
+        
+        // Show details
+        function showDetails() {
+            detailsDiv.innerHTML = `
+                <h3>📋 Configuration Details</h3>
+                <pre>${JSON.stringify(config, null, 2)}</pre>
+                
+                <h3>🔧 Appwrite SDK Info</h3>
+                <pre>SDK Loaded: ${typeof Appwrite !== 'undefined' ? 'Yes ✅' : 'No ❌'}
+SDK Version: ${typeof Appwrite !== 'undefined' ? Appwrite.version || 'Unknown' : 'N/A'}
+Client Initialized: ${typeof client !== 'undefined' ? 'Yes ✅' : 'No ❌'}
+Account Service: ${typeof account !== 'undefined' ? 'Yes ✅' : 'No ❌'}
+Database Service: ${typeof databases !== 'undefined' ? 'Yes ✅' : 'No ❌'}</pre>
+                
+                <h3>🌐 Browser Info</h3>
+                <pre>URL: ${window.location.href}
+User Agent: ${navigator.userAgent}
+Online: ${navigator.onLine ? 'Yes ✅' : 'No ❌'}</pre>
+            `;
+        }
+        
+        // Auto-start on page load
+        window.onload = function() {
+            setTimeout(initAppwrite, 500);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Portfolio Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; }
+        
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .admin-header h1 { font-size: 1.5rem; }
+        .user-info { display: flex; align-items: center; gap: 1rem; }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .btn-logout { background: rgba(255,255,255,0.2); color: white; }
+        .btn-logout:hover { background: rgba(255,255,255,0.3); }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5568d3; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-success:hover { background: #218838; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-danger:hover { background: #c82333; }
+        .btn-small { padding: 0.4rem 0.8rem; font-size: 0.85rem; margin: 0 0.2rem; }
+        
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .stat-card h3 { color: #666; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .stat-card .number { font-size: 2rem; font-weight: bold; color: #667eea; }
+        
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+            color: #666;
+        }
+        .tab.active { color: #667eea; border-bottom-color: #667eea; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .section h2 {
+            margin-bottom: 1.5rem;
+            color: #333;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #f0f0f0; }
+        th { background: #f8f9fa; font-weight: 600; color: #333; }
+        
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-approved { background: #d4edda; color: #155724; }
+        .status-rejected { background: #f8d7da; color: #721c24; }
+        .status-in-progress { background: #d1ecf1; color: #0c5460; }
+        .status-completed { background: #d4edda; color: #155724; }
+        .status-confirmed { background: #d4edda; color: #155724; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            width: 90%;
+        }
+        .modal-content h2 { margin-bottom: 1rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .btn-group { display: flex; gap: 1rem; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
+        <div class="user-info">
+            <span id="adminEmail">Loading...</span>
+            <button class="btn btn-logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Statistics -->
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <h3>Total Users</h3>
+                <div class="number" id="totalUsers">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Proposals</h3>
+                <div class="number" id="totalProposals">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Pending Proposals</h3>
+                <div class="number" id="pendingProposals">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Meetings</h3>
+                <div class="number" id="totalMeetings">0</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('proposals')">
+                <i class="fas fa-file-alt"></i> Proposals
+            </div>
+            <div class="tab" onclick="showTab('meetings')">
+                <i class="fas fa-calendar"></i> Meetings
+            </div>
+            <div class="tab" onclick="showTab('contacts')">
+                <i class="fas fa-envelope"></i> Contacts
+            </div>
+            <div class="tab" onclick="showTab('users')">
+                <i class="fas fa-users"></i> Users
+            </div>
+        </div>
+
+        <!-- Proposals Tab -->
+        <div id="proposals-tab" class="tab-content active">
+            <div class="section">
+                <h2>Proposals Management</h2>
+                <div id="proposalsTable"></div>
+            </div>
+        </div>
+
+        <!-- Meetings Tab -->
+        <div id="meetings-tab" class="tab-content">
+            <div class="section">
+                <h2>Meetings Management</h2>
+                <div id="meetingsTable"></div>
+            </div>
+        </div>
+
+        <!-- Contacts Tab -->
+        <div id="contacts-tab" class="tab-content">
+            <div class="section">
+                <h2>Contact Messages</h2>
+                <div id="contactsTable"></div>
+            </div>
+        </div>
+
+        <!-- Users Tab -->
+        <div id="users-tab" class="tab-content">
+            <div class="section">
+                <h2>Registered Users</h2>
+                <div id="usersTable"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Proposal Details -->
+    <div id="proposalModal" class="modal" onclick="if(event.target===this) closeModal('proposalModal')">
+        <div class="modal-content">
+            <h2>Proposal Details</h2>
+            <div id="proposalDetails"></div>
+            <div class="form-group">
+                <label>Admin Response</label>
+                <textarea id="adminResponse" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select id="proposalStatus">
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="updateProposal()">Update</button>
+                <button class="btn" onclick="closeModal('proposalModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Meeting Details -->
+    <div id="meetingModal" class="modal" onclick="if(event.target===this) closeModal('meetingModal')">
+        <div class="modal-content">
+            <h2>Meeting Details</h2>
+            <div id="meetingDetails"></div>
+            <div class="form-group">
+                <label>Meeting Link</label>
+                <input type="text" id="meetingLink" placeholder="https://meet.google.com/...">
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select id="meetingStatus">
+                    <option value="pending">Pending</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="cancelled">Cancelled</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="updateMeeting()">Update</button>
+                <button class="btn" onclick="closeModal('meetingModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appwrite SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
+    <script>
+        // Initialize Appwrite
+        const client = new Appwrite.Client();
+        client
+            .setEndpoint('https://cloud.appwrite.io/v1')
+            .setProject('68f563b4000a7ec27b68');
+        
+        const account = new Appwrite.Account(client);
+        const databases = new Appwrite.Databases(client);
+        const ID = Appwrite.ID;
+        const Query = Appwrite.Query;
+        
+        const ADMIN_EMAIL = 'ahq.john@gmail.com';
+        const DATABASE_ID = 'portfolio_db';
+        const COLLECTIONS = {
+            USERS: 'users',
+            PROPOSALS: 'proposals',
+            MEETINGS: 'meetings',
+            CONTACTS: 'contacts'
+        };
+
+        let currentProposalId = null;
+        let currentMeetingId = null;
+
+        // Check admin auth
+        (async () => {
+            try {
+                const user = await account.get();
+                if (!user || user.email !== ADMIN_EMAIL) {
+                    alert('Access denied. Admin only.');
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                document.getElementById('adminEmail').textContent = user.email;
+                loadDashboard();
+            } catch (error) {
+                console.error('Auth error:', error);
+                window.location.href = 'login.html';
+            }
+        })();
+
+        // Load dashboard
+        async function loadDashboard() {
+            try {
+                const users = await databases.listDocuments(DATABASE_ID, COLLECTIONS.USERS);
+                const proposals = await databases.listDocuments(DATABASE_ID, COLLECTIONS.PROPOSALS);
+                const meetings = await databases.listDocuments(DATABASE_ID, COLLECTIONS.MEETINGS);
+                
+                document.getElementById('totalUsers').textContent = users.total || 0;
+                document.getElementById('totalProposals').textContent = proposals.total || 0;
+                document.getElementById('totalMeetings').textContent = meetings.total || 0;
+                
+                const pending = proposals.documents.filter(p => p.status === 'pending');
+                document.getElementById('pendingProposals').textContent = pending.length;
+                
+                loadProposals();
+                loadMeetings();
+                loadContacts();
+                loadUsers();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error loading data: ' + error.message);
+            }
+        }
+
+        // Load proposals
+        async function loadProposals() {
+            try {
+                const response = await databases.listDocuments(
+                    DATABASE_ID, COLLECTIONS.PROPOSALS,
+                    [Query.orderDesc('$createdAt'), Query.limit(100)]
+                );
+                
+                const container = document.getElementById('proposalsTable');
+                if (response.documents.length === 0) {
+                    container.innerHTML = '<p style="text-align:center;padding:2rem;color:#666;">No proposals yet</p>';
+                    return;
+                }
+                
+                let html = '<table><thead><tr><th>Date</th><th>User</th><th>Title</th><th>Type</th><th>Budget</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+                
+                response.documents.forEach(doc => {
+                    html += `
+                        <tr>
+                            <td>${new Date(doc.createdAt).toLocaleDateString()}</td>
+                            <td>${doc.userName}<br><small>${doc.userEmail}</small></td>
+                            <td>${doc.title}</td>
+                            <td>${doc.type}</td>
+                            <td>${doc.budget || 'N/A'}</td>
+                            <td><span class="status-badge status-${doc.status}">${doc.status}</span></td>
+                            <td>
+                                <button class="btn btn-small btn-primary" onclick="viewProposal('${doc.$id}')">Edit</button>
+                                <button class="btn btn-small btn-danger" onclick="deleteProposal('${doc.$id}')">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // View/Edit Proposal
+        async function viewProposal(id) {
+            try {
+                const doc = await databases.getDocument(DATABASE_ID, COLLECTIONS.PROPOSALS, id);
+                currentProposalId = id;
+                
+                document.getElementById('proposalDetails').innerHTML = `
+                    <p><strong>From:</strong> ${doc.userName} (${doc.userEmail})</p>
+                    <p><strong>Title:</strong> ${doc.title}</p>
+                    <p><strong>Type:</strong> ${doc.type}</p>
+                    <p><strong>Budget:</strong> ${doc.budget || 'Not specified'}</p>
+                    <p><strong>Timeline:</strong> ${doc.timeline}</p>
+                    <p><strong>Start Date:</strong> ${doc.startDate || 'Not specified'}</p>
+                    <p><strong>Description:</strong></p>
+                    <p>${doc.description}</p>
+                `;
+                
+                document.getElementById('adminResponse').value = doc.adminResponse || '';
+                document.getElementById('proposalStatus').value = doc.status || 'pending';
+                
+                document.getElementById('proposalModal').classList.add('active');
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Update Proposal
+        async function updateProposal() {
+            if (!currentProposalId) return;
+            
+            try {
+                await databases.updateDocument(
+                    DATABASE_ID, COLLECTIONS.PROPOSALS, currentProposalId,
+                    {
+                        adminResponse: document.getElementById('adminResponse').value,
+                        status: document.getElementById('proposalStatus').value
+                    }
+                );
+                
+                alert('Proposal updated successfully!');
+                closeModal('proposalModal');
+                loadProposals();
+                loadDashboard();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Delete Proposal
+        async function deleteProposal(id) {
+            if (!confirm('Delete this proposal?')) return;
+            
+            try {
+                await databases.deleteDocument(DATABASE_ID, COLLECTIONS.PROPOSALS, id);
+                alert('Deleted successfully');
+                loadProposals();
+                loadDashboard();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Load meetings
+        async function loadMeetings() {
+            try {
+                const response = await databases.listDocuments(
+                    DATABASE_ID, COLLECTIONS.MEETINGS,
+                    [Query.orderDesc('$createdAt'), Query.limit(100)]
+                );
+                
+                const container = document.getElementById('meetingsTable');
+                if (response.documents.length === 0) {
+                    container.innerHTML = '<p style="text-align:center;padding:2rem;color:#666;">No meetings yet</p>';
+                    return;
+                }
+                
+                let html = '<table><thead><tr><th>Date</th><th>Time</th><th>User</th><th>Purpose</th><th>Mode</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+                
+                response.documents.forEach(doc => {
+                    html += `
+                        <tr>
+                            <td>${doc.date}</td>
+                            <td>${doc.time}</td>
+                            <td>${doc.userName}<br><small>${doc.userEmail}</small></td>
+                            <td>${doc.purpose}</td>
+                            <td>${doc.mode}</td>
+                            <td><span class="status-badge status-${doc.status}">${doc.status}</span></td>
+                            <td>
+                                <button class="btn btn-small btn-primary" onclick="viewMeeting('${doc.$id}')">Edit</button>
+                                <button class="btn btn-small btn-danger" onclick="deleteMeeting('${doc.$id}')">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // View/Edit Meeting
+        async function viewMeeting(id) {
+            try {
+                const doc = await databases.getDocument(DATABASE_ID, COLLECTIONS.MEETINGS, id);
+                currentMeetingId = id;
+                
+                document.getElementById('meetingDetails').innerHTML = `
+                    <p><strong>From:</strong> ${doc.userName} (${doc.userEmail})</p>
+                    <p><strong>Purpose:</strong> ${doc.purpose}</p>
+                    <p><strong>Date:</strong> ${doc.date}</p>
+                    <p><strong>Time:</strong> ${doc.time}</p>
+                    <p><strong>Duration:</strong> ${doc.duration} minutes</p>
+                    <p><strong>Mode:</strong> ${doc.mode}</p>
+                    <p><strong>Agenda:</strong></p>
+                    <p>${doc.agenda}</p>
+                `;
+                
+                document.getElementById('meetingLink').value = doc.meetingLink || '';
+                document.getElementById('meetingStatus').value = doc.status || 'pending';
+                
+                document.getElementById('meetingModal').classList.add('active');
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Update Meeting
+        async function updateMeeting() {
+            if (!currentMeetingId) return;
+            
+            try {
+                await databases.updateDocument(
+                    DATABASE_ID, COLLECTIONS.MEETINGS, currentMeetingId,
+                    {
+                        meetingLink: document.getElementById('meetingLink').value,
+                        status: document.getElementById('meetingStatus').value
+                    }
+                );
+                
+                alert('Meeting updated successfully!');
+                closeModal('meetingModal');
+                loadMeetings();
+                loadDashboard();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Delete Meeting
+        async function deleteMeeting(id) {
+            if (!confirm('Delete this meeting?')) return;
+            
+            try {
+                await databases.deleteDocument(DATABASE_ID, COLLECTIONS.MEETINGS, id);
+                alert('Deleted successfully');
+                loadMeetings();
+                loadDashboard();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Load contacts
+        async function loadContacts() {
+            try {
+                const response = await databases.listDocuments(
+                    DATABASE_ID, COLLECTIONS.CONTACTS,
+                    [Query.orderDesc('$createdAt'), Query.limit(100)]
+                );
+                
+                const container = document.getElementById('contactsTable');
+                if (response.documents.length === 0) {
+                    container.innerHTML = '<p style="text-align:center;padding:2rem;color:#666;">No contact messages yet</p>';
+                    return;
+                }
+                
+                let html = '<table><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Subject</th><th>Actions</th></tr></thead><tbody>';
+                
+                response.documents.forEach(doc => {
+                    html += `
+                        <tr>
+                            <td>${new Date(doc.createdAt).toLocaleDateString()}</td>
+                            <td>${doc.firstName} ${doc.lastName}</td>
+                            <td>${doc.email}</td>
+                            <td>${doc.subject}</td>
+                            <td>
+                                <button class="btn btn-small btn-primary" onclick="viewContact('${doc.$id}')">View</button>
+                                <button class="btn btn-small btn-danger" onclick="deleteContact('${doc.$id}')">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // View Contact
+        async function viewContact(id) {
+            try {
+                const doc = await databases.getDocument(DATABASE_ID, COLLECTIONS.CONTACTS, id);
+                alert(`Contact Message\n\nFrom: ${doc.firstName} ${doc.lastName}\nEmail: ${doc.email}\nPhone: ${doc.phone || 'N/A'}\nOrganization: ${doc.organization || 'N/A'}\nSubject: ${doc.subject}\nBudget: ${doc.budget || 'N/A'}\nTimeline: ${doc.timeline || 'N/A'}\n\nMessage:\n${doc.message}`);
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Delete Contact
+        async function deleteContact(id) {
+            if (!confirm('Delete this contact message?')) return;
+            
+            try {
+                await databases.deleteDocument(DATABASE_ID, COLLECTIONS.CONTACTS, id);
+                alert('Deleted successfully');
+                loadContacts();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Load users
+        async function loadUsers() {
+            try {
+                const response = await databases.listDocuments(
+                    DATABASE_ID, COLLECTIONS.USERS,
+                    [Query.orderDesc('$createdAt'), Query.limit(100)]
+                );
+                
+                const container = document.getElementById('usersTable');
+                if (response.documents.length === 0) {
+                    container.innerHTML = '<p style="text-align:center;padding:2rem;color:#666;">No users yet</p>';
+                    return;
+                }
+                
+                let html = '<table><thead><tr><th>Name</th><th>Email</th><th>Organization</th><th>Role</th><th>Joined</th></tr></thead><tbody>';
+                
+                response.documents.forEach(doc => {
+                    html += `
+                        <tr>
+                            <td>${doc.name}</td>
+                            <td>${doc.email}</td>
+                            <td>${doc.organization || 'N/A'}</td>
+                            <td>${doc.role || 'N/A'}</td>
+                            <td>${new Date(doc.createdAt).toLocaleDateString()}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Tab switching
+        function showTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.closest('.tab').classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Logout
+        async function logout() {
+            try {
+                await account.deleteSession('current');
+                window.location.href = 'login.html';
+            } catch (error) {
+                alert('Error logging out: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

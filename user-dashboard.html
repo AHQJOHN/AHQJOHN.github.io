@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Md. Ashfaqul Haque</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        .dashboard-container {
+            min-height: 100vh;
+            background: var(--light-color);
+        }
+        
+        .dashboard-header {
+            background: var(--gradient-primary);
+            color: #fff;
+            padding: 2rem 0;
+        }
+        
+        .dashboard-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .dashboard-nav {
+            background: #fff;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .dashboard-nav-list {
+            display: flex;
+            gap: 2rem;
+            padding: 1rem 0;
+            list-style: none;
+        }
+        
+        .dashboard-nav-list a {
+            color: var(--text-primary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+        
+        .dashboard-nav-list a:hover,
+        .dashboard-nav-list a.active {
+            background: var(--light-color);
+            color: var(--primary-color);
+        }
+        
+        .dashboard-content {
+            padding: 3rem 0;
+        }
+        
+        .dashboard-section {
+            display: none;
+        }
+        
+        .dashboard-section.active {
+            display: block;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #fff;
+        }
+        
+        .stat-icon.primary { background: var(--gradient-primary); }
+        .stat-icon.success { background: var(--success-color); }
+        .stat-icon.warning { background: var(--warning-color); }
+        .stat-icon.info { background: #3498db; }
+        
+        .stat-details h3 {
+            font-size: 2rem;
+            color: var(--dark-color);
+            margin-bottom: 0.3rem;
+        }
+        
+        .stat-details p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        .card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+        
+        .card h3 {
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .proposal-item,
+        .meeting-item {
+            padding: 1.5rem;
+            background: var(--light-color);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .proposal-header,
+        .meeting-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .status-badge.pending {
+            background: rgba(237, 137, 54, 0.1);
+            color: var(--warning-color);
+        }
+        
+        .status-badge.approved {
+            background: rgba(72, 187, 120, 0.1);
+            color: var(--success-color);
+        }
+        
+        .status-badge.rejected {
+            background: rgba(245, 87, 108, 0.1);
+            color: var(--danger-color);
+        }
+        
+        .status-badge.scheduled {
+            background: rgba(52, 152, 219, 0.1);
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div class="container">
+                <div class="dashboard-header-content">
+                    <div class="user-info">
+                        <div class="user-avatar" id="userAvatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h3 id="userName">Loading...</h3>
+                            <p id="userEmail" style="opacity: 0.9; font-size: 0.9rem;"></p>
+                        </div>
+                    </div>
+                    <div>
+                        <button onclick="logout()" class="btn btn-outline" style="color: #fff; border-color: #fff;">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dashboard Navigation -->
+        <nav class="dashboard-nav">
+            <div class="container">
+                <ul class="dashboard-nav-list">
+                    <li><a href="#overview" class="dashboard-nav-link active" onclick="showSection('overview')">
+                        <i class="fas fa-th-large"></i> Overview
+                    </a></li>
+                    <li><a href="#proposals" class="dashboard-nav-link" onclick="showSection('proposals')">
+                        <i class="fas fa-file-alt"></i> My Proposals
+                    </a></li>
+                    <li><a href="#meetings" class="dashboard-nav-link" onclick="showSection('meetings')">
+                        <i class="fas fa-calendar"></i> Meetings
+                    </a></li>
+                    <li><a href="#profile" class="dashboard-nav-link" onclick="showSection('profile')">
+                        <i class="fas fa-user-cog"></i> Profile
+                    </a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <div class="container">
+                
+                <!-- Overview Section -->
+                <div id="overview" class="dashboard-section active">
+                    <h2 style="margin-bottom: 2rem;">Dashboard Overview</h2>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon primary">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="stat-details">
+                                <h3 id="totalProposals">0</h3>
+                                <p>Total Proposals</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon success">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-details">
+                                <h3 id="approvedProposals">0</h3>
+                                <p>Approved</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon warning">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-details">
+                                <h3 id="pendingProposals">0</h3>
+                                <p>Pending</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon info">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-details">
+                                <h3 id="upcomingMeetings">0</h3>
+                                <p>Upcoming Meetings</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div class="card">
+                            <h3>Quick Actions</h3>
+                            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                <a href="#proposals" onclick="showSection('proposals')" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> Submit New Proposal
+                                </a>
+                                <a href="#meetings" onclick="showSection('meetings')" class="btn btn-secondary">
+                                    <i class="fas fa-calendar-plus"></i> Book a Meeting
+                                </a>
+                                <a href="contact.html" class="btn btn-outline" style="border-color: var(--primary-color); color: var(--primary-color);">
+                                    <i class="fas fa-envelope"></i> Contact Directly
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <h3>Recent Activity</h3>
+                            <div id="recentActivity">
+                                <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
+                                    No recent activity
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Proposals Section -->
+                <div id="proposals" class="dashboard-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h2>My Project Proposals</h2>
+                        <button onclick="showProposalForm()" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> New Proposal
+                        </button>
+                    </div>
+                    
+                    <!-- Proposal Form -->
+                    <div id="proposalFormCard" class="card" style="display: none;">
+                        <h3>Submit Project Proposal</h3>
+                        <form id="proposalForm">
+                            <div class="form-group">
+                                <label for="proposalTitle">Project Title *</label>
+                                <input type="text" id="proposalTitle" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="proposalType">Project Type *</label>
+                                    <select id="proposalType" required>
+                                        <option value="">-- Select --</option>
+                                        <option value="computer-vision">Computer Vision</option>
+                                        <option value="ml-deployment">ML Model Deployment</option>
+                                        <option value="data-annotation">Data Annotation</option>
+                                        <option value="research-collaboration">Research Collaboration</option>
+                                        <option value="consulting">Consulting</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="proposalBudget">Budget Range</label>
+                                    <select id="proposalBudget">
+                                        <option value="">-- Select --</option>
+                                        <option value="under-5k">Under $5,000</option>
+                                        <option value="5k-10k">$5,000 - $10,000</option>
+                                        <option value="10k-25k">$10,000 - $25,000</option>
+                                        <option value="25k-50k">$25,000 - $50,000</option>
+                                        <option value="50k-100k">$50,000 - $100,000</option>
+                                        <option value="over-100k">Over $100,000</option>
+                                        <option value="negotiable">Negotiable</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="proposalTimeline">Timeline *</label>
+                                    <select id="proposalTimeline" required>
+                                        <option value="">-- Select --</option>
+                                        <option value="urgent">Urgent (< 1 month)</option>
+                                        <option value="short">Short-term (1-3 months)</option>
+                                        <option value="medium">Medium-term (3-6 months)</option>
+                                        <option value="long">Long-term (6+ months)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="proposalStartDate">Desired Start Date</label>
+                                    <input type="date" id="proposalStartDate">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="proposalDescription">Project Description *</label>
+                                <textarea id="proposalDescription" rows="6" required placeholder="Describe your project requirements, goals, and any technical details..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="proposalAttachments">Attachments (Optional)</label>
+                                <input type="file" id="proposalAttachments" multiple>
+                                <small>Supported: PDF, DOC, DOCX, images (Max 10MB per file)</small>
+                            </div>
+                            
+                            <div style="display: flex; gap: 1rem;">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> Submit Proposal
+                                </button>
+                                <button type="button" onclick="hideProposalForm()" class="btn btn-outline" style="border-color: var(--text-secondary); color: var(--text-secondary);">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Proposals List -->
+                    <div class="card">
+                        <h3>Your Proposals</h3>
+                        <div id="proposalsList">
+                            <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
+                                No proposals yet. Click "New Proposal" to get started.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Meetings Section -->
+                <div id="meetings" class="dashboard-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h2>Meeting Schedule</h2>
+                        <button onclick="showMeetingForm()" class="btn btn-primary">
+                            <i class="fas fa-calendar-plus"></i> Book Meeting
+                        </button>
+                    </div>
+                    
+                    <!-- Meeting Form -->
+                    <div id="meetingFormCard" class="card" style="display: none;">
+                        <h3>Schedule a Meeting</h3>
+                        <form id="meetingForm">
+                            <div class="form-group">
+                                <label for="meetingPurpose">Meeting Purpose *</label>
+                                <select id="meetingPurpose" required>
+                                    <option value="">-- Select --</option>
+                                    <option value="project-discussion">Project Discussion</option>
+                                    <option value="consultation">Technical Consultation</option>
+                                    <option value="proposal-review">Proposal Review</option>
+                                    <option value="research-collaboration">Research Collaboration</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="meetingDate">Preferred Date *</label>
+                                    <input type="date" id="meetingDate" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="meetingTime">Preferred Time *</label>
+                                    <input type="time" id="meetingTime" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="meetingDuration">Duration *</label>
+                                <select id="meetingDuration" required>
+                                    <option value="">-- Select --</option>
+                                    <option value="30">30 minutes</option>
+                                    <option value="60">1 hour</option>
+                                    <option value="90">1.5 hours</option>
+                                    <option value="120">2 hours</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="meetingMode">Meeting Mode *</label>
+                                <select id="meetingMode" required>
+                                    <option value="">-- Select --</option>
+                                    <option value="google-meet">Google Meet</option>
+                                    <option value="zoom">Zoom</option>
+                                    <option value="skype">Skype</option>
+                                    <option value="phone">Phone Call</option>
+                                    <option value="in-person">In-Person</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="meetingAgenda">Agenda / Topics to Discuss *</label>
+                                <textarea id="meetingAgenda" rows="5" required placeholder="Please provide details about what you'd like to discuss..."></textarea>
+                            </div>
+                            
+                            <div style="display: flex; gap: 1rem;">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-check"></i> Request Meeting
+                                </button>
+                                <button type="button" onclick="hideMeetingForm()" class="btn btn-outline" style="border-color: var(--text-secondary); color: var(--text-secondary);">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Meetings List -->
+                    <div class="card">
+                        <h3>Your Meetings</h3>
+                        <div id="meetingsList">
+                            <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
+                                No meetings scheduled. Click "Book Meeting" to schedule one.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Section -->
+                <div id="profile" class="dashboard-section">
+                    <h2 style="margin-bottom: 2rem;">My Profile</h2>
+                    
+                    <div class="card">
+                        <h3>Profile Information</h3>
+                        <form id="profileForm">
+                            <div class="form-group">
+                                <label for="profileName">Full Name</label>
+                                <input type="text" id="profileName">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileEmail">Email Address</label>
+                                <input type="email" id="profileEmail" disabled>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileOrganization">Organization / Institution</label>
+                                <input type="text" id="profileOrganization">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileRole">Role</label>
+                                <select id="profileRole">
+                                    <option value="">-- Select --</option>
+                                    <option value="client">Potential Client</option>
+                                    <option value="professor">Professor / Researcher</option>
+                                    <option value="recruiter">Recruiter / HR</option>
+                                    <option value="student">Student</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
+</div> <!-- End of dashboard-content -->
+
+<!-- Appwrite SDK -->
+<script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
+<script>
+    // Initialize Appwrite
+    const client = new Appwrite.Client();
+    client
+        .setEndpoint('https://cloud.appwrite.io/v1')
+        .setProject('68f563b4000a7ec27b68');
+    
+    const account = new Appwrite.Account(client);
+    const databases = new Appwrite.Databases(client);
+    const ID = Appwrite.ID;
+    const Query = Appwrite.Query;
+    
+    const DATABASE_ID = 'portfolio_db';
+    const COLLECTIONS = {
+        USERS: 'users',
+        PROPOSALS: 'proposals',
+        MEETINGS: 'meetings'
+    };
+
+    let currentUser = null;
+
+    // Check authentication and load dashboard
+    (async () => {
+        try {
+            currentUser = await account.get();
+            
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            document.getElementById('userName').textContent = currentUser.name || 'User';
+            document.getElementById('userEmail').textContent = currentUser.email;
+            
+            loadDashboardData();
+        } catch (error) {
+            console.error('Auth error:', error);
+            window.location.href = 'login.html';
+        }
+    })();
+
+    // Load dashboard data
+    async function loadDashboardData() {
+        try {
+            // Load proposals
+            const proposalsResponse = await databases.listDocuments(
+                DATABASE_ID,
+                COLLECTIONS.PROPOSALS,
+                [Query.equal('userId', currentUser.$id), Query.orderDesc('$createdAt')]
+            );
+            
+            document.getElementById('totalProposals').textContent = proposalsResponse.total || 0;
+            
+            const approved = proposalsResponse.documents.filter(p => p.status === 'approved');
+            document.getElementById('approvedProposals').textContent = approved.length;
+            
+            const pending = proposalsResponse.documents.filter(p => p.status === 'pending');
+            document.getElementById('pendingProposals').textContent = pending.length;
+            
+            displayProposals(proposalsResponse.documents);
+            
+            // Load meetings
+            const meetingsResponse = await databases.listDocuments(
+                DATABASE_ID,
+                COLLECTIONS.MEETINGS,
+                [Query.equal('userId', currentUser.$id), Query.orderDesc('$createdAt')]
+            );
+            
+            document.getElementById('upcomingMeetings').textContent = meetingsResponse.total || 0;
+            
+            displayMeetings(meetingsResponse.documents);
+            
+            displayRecentActivity(proposalsResponse.documents, meetingsResponse.documents);
+            
+        } catch (error) {
+            console.error('Error loading dashboard:', error);
+            alert('Error loading data: ' + error.message);
+        }
+    }
+
+    // Display proposals
+    function displayProposals(proposals) {
+        const container = document.getElementById('proposalsTable');
+        if (!container) return;
+        
+        if (proposals.length === 0) {
+            container.innerHTML = '<p class="empty-state">No proposals yet. Click "New Proposal" to get started.</p>';
+            return;
+        }
+        
+        let html = '<table style="width:100%;"><thead><tr><th>Date</th><th>Title</th><th>Type</th><th>Status</th><th>Response</th></tr></thead><tbody>';
+        
+        proposals.forEach(prop => {
+            html += `
+                <tr>
+                    <td>${new Date(prop.createdAt).toLocaleDateString()}</td>
+                    <td>${prop.title}</td>
+                    <td>${prop.type}</td>
+                    <td><span class="status-badge status-${prop.status}">${prop.status}</span></td>
+                    <td>${prop.adminResponse || 'Pending'}</td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table>';
+        container.innerHTML = html;
+    }
+
+    // Display meetings
+    function displayMeetings(meetings) {
+        const container = document.getElementById('meetingsTable');
+        if (!container) return;
+        
+        if (meetings.length === 0) {
+            container.innerHTML = '<p class="empty-state">No meetings scheduled. Click "Book Meeting" to schedule one.</p>';
+            return;
+        }
+        
+        let html = '<table style="width:100%;"><thead><tr><th>Date</th><th>Time</th><th>Purpose</th><th>Mode</th><th>Status</th></tr></thead><tbody>';
+        
+        meetings.forEach(meeting => {
+            html += `
+                <tr>
+                    <td>${meeting.date}</td>
+                    <td>${meeting.time}</td>
+                    <td>${meeting.purpose}</td>
+                    <td>${meeting.mode}</td>
+                    <td><span class="status-badge status-${meeting.status}">${meeting.status}</span></td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table>';
+        container.innerHTML = html;
+    }
+
+    // Display recent activity
+    function displayRecentActivity(proposals, meetings) {
+        const container = document.getElementById('recentActivity');
+        if (!container) return;
+        
+        const activities = [];
+        
+        proposals.forEach(prop => {
+            activities.push({
+                date: new Date(prop.createdAt),
+                text: `Submitted proposal: ${prop.title}`,
+                type: 'proposal'
+            });
+        });
+        
+        meetings.forEach(meeting => {
+            activities.push({
+                date: new Date(meeting.createdAt),
+                text: `Scheduled meeting: ${meeting.purpose}`,
+                type: 'meeting'
+            });
+        });
+        
+        activities.sort((a, b) => b.date - a.date);
+        
+        if (activities.length === 0) {
+            container.innerHTML = '<p class="empty-state">No recent activity</p>';
+            return;
+        }
+        
+        let html = '<ul class="activity-list">';
+        activities.slice(0, 5).forEach(activity => {
+            html += `<li><strong>${activity.date.toLocaleDateString()}:</strong> ${activity.text}</li>`;
+        });
+        html += '</ul>';
+        container.innerHTML = html;
+    }
+
+    // Show section
+    function showSection(sectionId) {
+        document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(sectionId)?.classList.add('active');
+    }
+
+    // New Proposal Modal
+    function showNewProposal() {
+        document.getElementById('proposalModal').style.display = 'flex';
+    }
+
+    function closeProposalModal() {
+        document.getElementById('proposalModal').style.display = 'none';
+        document.getElementById('proposalForm').reset();
+    }
+
+    // Submit Proposal
+    async function submitProposal(event) {
+        event.preventDefault();
+        
+        const submitBtn = event.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+        submitBtn.disabled = true;
+        
+        try {
+            const formData = {
+                userId: currentUser.$id,
+                userEmail: currentUser.email,
+                userName: currentUser.name,
+                title: document.getElementById('proposalTitle').value,
+                type: document.getElementById('proposalType').value,
+                budget: document.getElementById('proposalBudget').value,
+                timeline: document.getElementById('proposalTimeline').value,
+                startDate: document.getElementById('proposalStartDate').value,
+                description: document.getElementById('proposalDescription').value,
+                status: 'pending',
+                adminResponse: '',
+                createdAt: new Date().toISOString()
+            };
+            
+            await databases.createDocument(
+                DATABASE_ID,
+                COLLECTIONS.PROPOSALS,
+                ID.unique(),
+                formData
+            );
+            
+            alert('✅ Proposal submitted successfully!');
+            closeProposalModal();
+            loadDashboardData();
+            
+        } catch (error) {
+            console.error('Error:', error);
+            alert('❌ Error submitting proposal: ' + error.message);
+        } finally {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    }
+
+    // New Meeting Modal
+    function showBookMeeting() {
+        document.getElementById('meetingModal').style.display = 'flex';
+    }
+
+    function closeMeetingModal() {
+        document.getElementById('meetingModal').style.display = 'none';
+        document.getElementById('meetingForm').reset();
+    }
+
+    // Submit Meeting Request
+    async function submitMeeting(event) {
+        event.preventDefault();
+        
+        const submitBtn = event.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
+        submitBtn.disabled = true;
+        
+        try {
+            const formData = {
+                userId: currentUser.$id,
+                userEmail: currentUser.email,
+                userName: currentUser.name,
+                purpose: document.getElementById('meetingPurpose').value,
+                date: document.getElementById('meetingDate').value,
+                time: document.getElementById('meetingTime').value,
+                duration: document.getElementById('meetingDuration').value,
+                mode: document.getElementById('meetingMode').value,
+                agenda: document.getElementById('meetingAgenda').value,
+                status: 'pending',
+                meetingLink: '',
+                createdAt: new Date().toISOString()
+            };
+            
+            await databases.createDocument(
+                DATABASE_ID,
+                COLLECTIONS.MEETINGS,
+                ID.unique(),
+                formData
+            );
+            
+            alert('✅ Meeting request submitted successfully!');
+            closeMeetingModal();
+            loadDashboardData();
+            
+        } catch (error) {
+            console.error('Error:', error);
+            alert('❌ Error booking meeting: ' + error.message);
+        } finally {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    }
+
+    // Logout
+    async function logout() {
+        try {
+            await account.deleteSession('current');
+            window.location.href = 'login.html';
+        } catch (error) {
+            console.error('Logout error:', error);
+            alert('Error logging out: ' + error.message);
+        }
+    }
+
+    // Make functions available globally
+    window.showSection = showSection;
+    window.showNewProposal = showNewProposal;
+    window.closeProposalModal = closeProposalModal;
+    window.submitProposal = submitProposal;
+    window.showBookMeeting = showBookMeeting;
+    window.closeMeetingModal = closeMeetingModal;
+    window.submitMeeting = submitMeeting;
+    window.logout = logout;
+</script>
+
+<script src="script.js"></script>
+
+</body>
+</html>
