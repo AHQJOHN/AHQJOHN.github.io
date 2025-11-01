@@ -4,22 +4,33 @@
 
 /* Root Variables */
 :root {
-    --primary-color: #667eea;
-    --secondary-color: #764ba2;
-    --accent-color: #f093fb;
-    --dark-color: #2d3748;
-    --light-color: #f7fafc;
-    --text-primary: #2d3748;
-    --text-secondary: #718096;
-    --success-color: #48bb78;
-    --warning-color: #ed8936;
-    --danger-color: #f56565;
-    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
-    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-    --shadow-xl: 0 20px 25px rgba(0,0,0,0.15);
+    /* Primary Brand Colors - Cyan/Teal Theme */
+    --primary-color: #00d9a3;           /* Bright cyan/turquoise - for accents and buttons */
+    --secondary-color: #1de9b6;         /* Teal-cyan - for secondary accents */
+    --accent-color: #00e5ac;            /* Bright turquoise - for highlights */
+
+    /* Background Colors - Dark Teal */
+    --dark-color: #0a1f1a;              
+    --light-color: #0f2d26;               
+
+    /* Text Colors */
+    --text-primary: #ffffff;            /* White text - for readability on dark bg */
+    --text-secondary: #8b9e96;          /* Muted gray-green - for secondary text */
+
+    /* Status Colors */
+    --success-color: #00d9a3;           /* Cyan for success */
+    --warning-color: #ffa726;           /* Warm orange */
+    --danger-color: #ff5252;            /* Bright red */
+
+    /* Gradients - Cyan/Teal Blends */
+    --gradient-primary: linear-gradient(135deg, #223b36 0%, #102822 100%);
+    --gradient-secondary: linear-gradient(135deg, #132c26 0%, #103930 100%);
+
+    /* Shadow System - Adjusted for Dark Theme with cyan glow */
+    --shadow-sm: 0 2px 4px rgba(0, 217, 163, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 217, 163, 0.15);
+    --shadow-lg: 0 10px 15px rgba(0, 217, 163, 0.2);
+    --shadow-xl: 0 20px 25px rgba(0, 217, 163, 0.25);
     --transition: all 0.3s ease;
 }
 
@@ -86,7 +97,8 @@ p {
 
 /* Navigation */
 .navbar {
-    background: #fff;
+    background: rgba(10, 31, 26, 0.95);
+    border-bottom: 1px solid #1a4038;
     box-shadow: var(--shadow-md);
     position: sticky;
     top: 0;
@@ -130,7 +142,7 @@ p {
 .nav-menu a:hover,
 .nav-menu a.active {
     color: var(--primary-color);
-    background: rgba(102, 126, 234, 0.1);
+    background: rgba(0, 217, 163, 0.1);
 }
 
 .nav-menu .cta-btn {
@@ -326,7 +338,7 @@ p {
     display: block;
     width: 30px;
     height: 50px;
-    border: 2px solid #fff;
+    border: 2px solid var(--accent-color);
     border-radius: 25px;
     position: relative;
 }
@@ -335,7 +347,7 @@ p {
     content: '';
     width: 6px;
     height: 6px;
-    background: #fff;
+    background: var(--accent-color);
     border-radius: 50%;
     position: absolute;
     top: 10px;
@@ -394,7 +406,7 @@ p {
 }
 
 .btn-outline:hover {
-    background: #fff;
+    background: var(--light-color);
     color: var(--primary-color);
 }
 
@@ -422,7 +434,7 @@ section {
     text-align: center;
     font-size: 2.5rem;
     margin-bottom: 3rem;
-    color: var(--dark-color);
+    color: var(--accent-color);
     position: relative;
 }
 
@@ -456,7 +468,7 @@ section {
 
 /* Expertise Section */
 .expertise {
-    background: #fff;
+    background: var(--dark-color);
 }
 
 .expertise-grid {
@@ -496,7 +508,7 @@ section {
 .expertise-card h3 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: var(--dark-color);
+    color: var(--accent-color);
 }
 
 .expertise-card p {
@@ -512,7 +524,7 @@ section {
 }
 
 .project-card {
-    background: #fff;
+    background: var(--light-color);
     border-radius: 10px;
     overflow: hidden;
     box-shadow: var(--shadow-md);
@@ -560,7 +572,7 @@ section {
 }
 
 .overlay-btn {
-    background: #fff;
+    background: var(--light-color);
     color: var(--primary-color);
     padding: 0.75rem 1.5rem;
     border-radius: 5px;
@@ -573,7 +585,7 @@ section {
 
 .project-content h3 {
     margin-bottom: 1rem;
-    color: var(--dark-color);
+    color: var(--text-primary);
 }
 
 .project-content p {
@@ -588,7 +600,7 @@ section {
 }
 
 .project-tags span {
-    background: var(--primary-color);
+    background: var(--dark-color);
     color: #fff;
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
@@ -603,7 +615,7 @@ section {
 }
 
 .research-item {
-    background: #fff;
+    background: var(--light-color);
     padding: 2rem;
     border-radius: 10px;
     box-shadow: var(--shadow-md);
@@ -641,7 +653,7 @@ section {
 .badge {
     display: inline-block;
     background: var(--accent-color);
-    color: #fff;
+    color: var(--light-color);
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
     font-size: 0.85rem;
@@ -674,7 +686,7 @@ section {
 }
 
 .cta-section .btn-primary {
-    background: #fff;
+    background: var(--light-color);
     color: var(--primary-color);
 }
 
@@ -745,7 +757,7 @@ section {
    =================================== */
 
    .about-section {
-    background: #fff;
+    background: var(--dark-color);
 }
 
 .about-grid {
@@ -781,7 +793,7 @@ section {
 
 .quick-info h3 {
     margin-bottom: 1rem;
-    color: var(--dark-color);
+    color: var(--text-secondary);
 }
 
 .quick-info ul li {
@@ -845,7 +857,7 @@ section {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--dark-color);
+    color: var(--accent-color);
     margin-bottom: 1rem;
 }
 
@@ -865,7 +877,7 @@ section {
 
 /* Timeline */
 .timeline-section {
-    background: var(--light-color);
+    background: #0d2820;
 }
 
 .timeline {
@@ -914,7 +926,7 @@ section {
 
 .timeline-content {
     flex: 1;
-    background: #fff;
+    background: var(--light-color);
     padding: 2rem;
     border-radius: 10px;
     box-shadow: var(--shadow-md);
@@ -940,7 +952,7 @@ section {
 }
 
 .timeline-content h3 {
-    color: var(--dark-color);
+    color: var(--text-secondary);
     margin-bottom: 0.5rem;
 }
 
@@ -962,7 +974,7 @@ section {
 
 /* Education Section */
 .education-section {
-    background: #fff;
+    background: var(--dark-color);
 }
 
 .education-grid {
@@ -1004,7 +1016,7 @@ section {
 }
 
 .education-card h3 {
-    color: var(--dark-color);
+    color: var(--text-secondary);
     margin-bottom: 0.5rem;
 }
 
@@ -1032,7 +1044,7 @@ section {
 .courses strong {
     display: block;
     margin-bottom: 0.5rem;
-    color: var(--dark-color);
+    color: var(--text-primary);
 }
 
 .courses ul {
@@ -1047,7 +1059,7 @@ section {
 
 /* Certifications */
 .certifications-section {
-    background: var(--light-color);
+    background: #0d2820;
 }
 
 .cert-grid {
@@ -1057,7 +1069,7 @@ section {
 }
 
 .cert-item {
-    background: #fff;
+    background: var(--light-color);
     padding: 2rem;
     border-radius: 10px;
     text-align: center;
@@ -1077,7 +1089,7 @@ section {
 }
 
 .cert-item h4 {
-    color: var(--dark-color);
+    color: var(--accent-color);
     margin-bottom: 0.5rem;
 }
 
@@ -1091,7 +1103,7 @@ section {
    =================================== */
 
 .research-interests {
-    background: #fff;
+    background: var(--dark-color);
 }
 
 .interests-grid {
@@ -1122,7 +1134,7 @@ section {
 }
 
 .interest-card h3 {
-    color: var(--dark-color);
+    color: var(--accent-color);
     margin-bottom: 1rem;
 }
 
@@ -1132,11 +1144,11 @@ section {
 
 /* Publications */
 .publications-section {
-    background: var(--light-color);
+    background: #0d2820;
 }
 
 .publication-item {
-    background: #fff;
+    background: var(--light-color);
     padding: 2rem;
     border-radius: 10px;
     margin-bottom: 2rem;
@@ -1149,7 +1161,7 @@ section {
 }
 
 .pub-header h3 {
-    color: var(--dark-color);
+    color: var(--text-primary);
     margin-bottom: 1rem;
     line-height: 1.4;
 }
@@ -1186,7 +1198,7 @@ section {
 }
 
 .pub-details strong {
-    color: var(--dark-color);
+    color: var(--text-primary);
 }
 
 .pub-details ul {
@@ -1202,7 +1214,7 @@ section {
 
 /* Supervisors */
 .supervision-section {
-    background: #fff;
+    background: var(--dark-color);
 }
 
 .supervisors-grid {
@@ -1219,7 +1231,7 @@ section {
 }
 
 .supervisor-card h3 {
-    color: var(--dark-color);
+    color: var(--text-secondary);
     margin-bottom: 1rem;
 }
 
@@ -1229,7 +1241,7 @@ section {
 }
 
 .supervisor-card strong {
-    color: var(--dark-color);
+    color: var(--text-primary);
 }
 
 /* ===================================
@@ -1237,11 +1249,11 @@ section {
    =================================== */
 
 .projects-detail-section {
-    background: var(--light-color);
+    background: #0d2820;
 }
 
 .project-detail-card {
-    background: #fff;
+    background: var(--light-color);
     border-radius: 15px;
     margin-bottom: 4rem;
     overflow: hidden;
@@ -1277,7 +1289,7 @@ section {
 }
 
 .project-description h3 {
-    color: var(--dark-color);
+    color: var(--secondary-color);
     margin-top: 2rem;
     margin-bottom: 1rem;
 }
@@ -1289,7 +1301,7 @@ section {
 
 .challenge-list li,
 .solution-list li {
-    background: var(--light-color);
+    background: var(--dark-color);
     padding: 1rem;
     margin-bottom: 1rem;
     border-radius: 5px;
@@ -1301,7 +1313,7 @@ section {
 }
 
 .challenge-solution-block {
-    background: var(--light-color);
+    background: var(--dark-color);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     border-radius: 10px;
@@ -1309,7 +1321,7 @@ section {
 }
 
 .challenge-solution-block h4 {
-    color: var(--dark-color);
+    color: var(--text-primary);
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
@@ -1333,7 +1345,7 @@ section {
 }
 
 .feature-item {
-    background: var(--light-color);
+    background: var(--dark-color);
     padding: 1.5rem;
     border-radius: 10px;
     text-align: center;
@@ -1437,7 +1449,7 @@ section {
 .metric-box {
     text-align: center;
     padding: 2rem;
-    background: var(--light-color);
+    background: var(--dark-color);
     border-radius: 10px;
 }
 
@@ -1466,14 +1478,14 @@ section {
 }
 
 .small-project-card {
-    background: #fff;
+    background: var(--light-color);
     padding: 2rem;
     border-radius: 10px;
     box-shadow: var(--shadow-md);
 }
 
 .small-project-card h3 {
-    color: var(--dark-color);
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
@@ -1511,7 +1523,7 @@ section {
 }
 
 .modal-content {
-    background-color: #fff;
+    background-color: var(--light-color);
     margin: 5% auto;
     padding: 2rem;
     border-radius: 10px;
@@ -1579,11 +1591,11 @@ section {
    =================================== */
 
 .products-section {
-    background: var(--light-color);
+    background: #0d2820;
 }
 
 .product-card-large {
-    background: #fff;
+    background: var(--light-color);
     border-radius: 15px;
     margin-bottom: 4rem;
     overflow: hidden;
@@ -1658,7 +1670,7 @@ section {
 .use-case-item {
     text-align: center;
     padding: 1.5rem;
-    background: var(--light-color);
+    background: var(--dark-color);
     border-radius: 10px;
 }
 
@@ -1676,7 +1688,7 @@ section {
 .deployment-options {
     margin-top: 2rem;
     padding: 1.5rem;
-    background: var(--light-color);
+    background: var(--dark-color);
     border-radius: 10px;
 }
 
@@ -1717,7 +1729,7 @@ section {
 .benefit-item {
     text-align: center;
     padding: 1.5rem;
-    background: var(--light-color);
+    background: var(--dark-color);
     border-radius: 10px;
 }
 
@@ -1728,7 +1740,7 @@ section {
 }
 
 .benefit-item h4 {
-    color: var(--dark-color);
+    color: var(--accent-color);
     margin-bottom: 0.5rem;
 }
 
@@ -1759,7 +1771,7 @@ section {
 }
 
 .module-card {
-    background: var(--light-color);
+    background: var(--dark-color);
     padding: 2rem;
     border-radius: 10px;
     text-align: center;
@@ -1772,7 +1784,7 @@ section {
 }
 
 .module-card h4 {
-    color: var(--dark-color);
+    color: var(--accent-color);
     margin-bottom: 1rem;
 }
 
@@ -1792,7 +1804,7 @@ section {
 .roi-item {
     text-align: center;
     padding: 2rem;
-    background: var(--light-color);
+    background: var(--dark-color);
     border-radius: 10px;
 }
 
@@ -1818,7 +1830,7 @@ section {
 }
 
 .capability-card {
-    background: var(--light-color);
+    background: var(--dark-color);
     padding: 2rem;
     border-radius: 10px;
 }
@@ -1837,7 +1849,7 @@ section {
 }
 
 .capability-card h4 {
-    color: var(--dark-color);
+    color: var(--accent-color);
     margin-bottom: 1rem;
 }
 
@@ -1876,7 +1888,7 @@ section {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--dark-color);
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
@@ -1897,7 +1909,7 @@ section {
     min-width: 150px;
     text-align: center;
     padding: 1.5rem 1rem;
-    background: var(--light-color);
+    background: var(--dark-color);
     border-radius: 10px;
     position: relative;
 }
@@ -1918,7 +1930,7 @@ section {
 }
 
 .step-item h4 {
-    color: var(--dark-color);
+    color: var(--text-secondary);
     font-size: 1rem;
 }
 
@@ -1971,7 +1983,7 @@ section {
 }
 
 .custom-solutions-cta .btn-primary {
-    background: #fff;
+    background: var(--light-color);
     color: var(--primary-color);
 }
 
@@ -2015,11 +2027,11 @@ section {
 }
 
 .technical-skills-section {
-    background: var(--light-color);
+    background: #0d2820;
 }
 
 .skill-category {
-    background: #fff;
+    background: var(--light-color);
     padding: 3rem;
     border-radius: 15px;
     margin-bottom: 3rem;
@@ -2030,7 +2042,7 @@ section {
     display: flex;
     align-items: center;
     gap: 15px;
-    color: var(--dark-color);
+    color: var(--accent-color);
     margin-bottom: 2rem;
     font-size: 2rem;
 }
@@ -2046,7 +2058,7 @@ section {
 }
 
 .skill-card {
-    background: var(--light-color);
+    background: var(--dark-color);
     padding: 2rem;
     border-radius: 10px;
     text-align: center;
@@ -2080,7 +2092,7 @@ section {
 .skill-icon.fastai { background: linear-gradient(135deg, #00a2ff 0%, #ff006e 100%); }
 
 .skill-card h3 {
-    color: var(--dark-color);
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
@@ -2128,7 +2140,7 @@ section {
 }
 
 .skill-card-detailed {
-    background: var(--light-color);
+    background: var(--dark-color);
     padding: 2rem;
     border-radius: 10px;
 }
@@ -2137,7 +2149,7 @@ section {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--dark-color);
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
@@ -2151,7 +2163,7 @@ section {
 }
 
 .skill-details strong {
-    color: var(--dark-color);
+    color: var(--text-primary);
 }
 
 .advanced-skills-grid {
@@ -2161,14 +2173,14 @@ section {
 }
 
 .advanced-skill-card {
-    background: var(--light-color);
+    background: var(--dark-color);
     padding: 1.5rem;
     border-radius: 10px;
     border-left: 4px solid var(--primary-color);
 }
 
 .advanced-skill-card h4 {
-    color: var(--dark-color);
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
@@ -2183,13 +2195,13 @@ section {
 }
 
 .data-skill-block {
-    background: var(--light-color);
+    background: var(--dark-color);
     padding: 2rem;
     border-radius: 10px;
 }
 
 .data-skill-block h4 {
-    color: var(--dark-color);
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
@@ -2210,7 +2222,7 @@ section {
 }
 
 .tool-category-box {
-    background: var(--light-color);
+    background: var(--dark-color);
     padding: 1.5rem;
     border-radius: 10px;
 }
@@ -2219,7 +2231,7 @@ section {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--dark-color);
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
@@ -2248,7 +2260,7 @@ section {
 }
 
 .soft-skill-item {
-    background: var(--light-color);
+    background: var(--dark-color);
     padding: 2rem;
     border-radius: 10px;
     text-align: center;
@@ -2261,7 +2273,7 @@ section {
 }
 
 .soft-skill-item h4 {
-    color: var(--dark-color);
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
@@ -2274,7 +2286,7 @@ section {
    =================================== */
 
 .contact-section {
-    background: var(--light-color);
+    background: #0d2820;
 }
 
 .contact-grid {
@@ -2284,7 +2296,7 @@ section {
 }
 
 .contact-info {
-    background: #fff;
+    background: var(--dark-color);
     padding: 2rem;
     border-radius: 15px;
     box-shadow: var(--shadow-md);
@@ -2294,7 +2306,7 @@ section {
 }
 
 .contact-info h2 {
-    color: var(--dark-color);
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
@@ -2336,7 +2348,7 @@ section {
 }
 
 .contact-detail h4 {
-    color: var(--dark-color);
+    color: var(--text-primary);
     margin-bottom: 0.3rem;
 }
 
@@ -2428,14 +2440,14 @@ section {
 
 /* Contact Form */
 .contact-form-wrapper {
-    background: #fff;
+    background: var(--light-color);
     padding: 3rem;
     border-radius: 15px;
     box-shadow: var(--shadow-md);
 }
 
 .contact-form-wrapper h2 {
-    color: var(--dark-color);
+    color: var(--text-primary);
     margin-bottom: 2rem;
 }
 
@@ -2453,7 +2465,7 @@ section {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: var(--dark-color);
+    color: var(--text-secondary);
 }
 
 .contact-form input,
@@ -2550,7 +2562,7 @@ section {
 
 /* Services Overview */
 .services-overview {
-    background: #fff;
+    background: var(--dark-color);
 }
 
 .services-grid {
@@ -2586,7 +2598,7 @@ section {
 }
 
 .service-card h3 {
-    color: var(--dark-color);
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
@@ -2596,7 +2608,7 @@ section {
 
 /* FAQ Section */
 .faq-section {
-    background: var(--light-color);
+    background: #0d2820;
 }
 
 .faq-container {
@@ -2605,7 +2617,7 @@ section {
 }
 
 .faq-item {
-    background: #fff;
+    background: var(--light-color);
     margin-bottom: 1rem;
     border-radius: 10px;
     overflow: hidden;
@@ -2626,7 +2638,7 @@ section {
 }
 
 .faq-question h4 {
-    color: var(--dark-color);
+    color: var(--text-primary);
     margin: 0;
 }
 
@@ -2687,7 +2699,7 @@ section {
         left: -100%;
         top: 70px;
         flex-direction: column;
-        background-color: #fff;
+        background-color: var(--light-color);
         width: 100%;
         text-align: center;
         transition: 0.3s;
