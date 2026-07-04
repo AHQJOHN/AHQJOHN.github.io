@@ -1,0 +1,10 @@
+{
+  "name": "Md. Ashfaqul Haque | AI Product Lead & Senior ML Engineer",
+  "short_name": "AHQ Portfolio",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#050912",
+  "theme_color": "#050912",
+  "description": "Enterprise AI, computer vision, edge deployment, product leadership, and research portfolio.",
+  "icons": [{"src":"assets/img/favicon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
