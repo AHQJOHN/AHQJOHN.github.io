@@ -123,3 +123,128 @@
     }
   });
 })();
+
+// Vision pointer HUD
+// A restrained computer-vision reticle that eases toward the pointer with a soft
+// glow, trailing scan dots, and a contextual detection label. Self-contained and
+// disabled on touch / coarse-pointer devices. Under prefers-reduced-motion it
+// degrades to a calm, instant reticle (no trails, ambient glow, or click pulse).
+(() => {
+  if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const rootEl = document.documentElement;
+  const EASE = reduceMotion ? 1 : 0.18;
+  const TRAIL_COUNT = reduceMotion ? 0 : 6;
+  const TARGETS = 'a, button, .btn, .card, .work-card, .project-card, .case-card, .research-card, .research-item, .metric-card, .stat-card, .visual-card, .architecture-card, .contact-card, .archive-card, .project-visual, .architecture-visual, .project-metric, picture, img, [data-vision-target]';
+
+  const labelFor = (el) => {
+    const custom = el.closest('[data-vision-label]');
+    if (custom) return custom.dataset.visionLabel;
+    if (el.matches('picture, img') || el.closest('.project-visual, .architecture-visual')) return 'SCAN';
+    if (el.closest('.project-metric, .metric-card, .stat-card, [data-counter]')) return 'KPI';
+    if (el.closest('.archive-card, .work-card, .case-card')) return 'TRACK';
+    if (el.closest('.research-card, .research-item, .research-layout')) return 'RESEARCH';
+    if (el.closest('.project-card')) return 'DETECT';
+    const link = el.closest('a');
+    if ((link && /mailto:|tel:|wa\.me|t\.me|linkedin|github|researchgate|calendar/i.test(link.getAttribute('href') || '')) || el.closest('.contact-card, .contact-channel')) return 'CONNECT';
+    return 'FOCUS';
+  };
+
+  const pointer = document.createElement('div');
+  pointer.className = 'vision-pointer';
+  pointer.setAttribute('aria-hidden', 'true');
+  const reticle = document.createElement('div');
+  reticle.className = 'vision-pointer__reticle';
+  reticle.innerHTML =
+    '<span class="vision-pointer__glow"></span>'
+    + '<span class="vision-pointer__box"></span>'
+    + '<span class="vision-pointer__ring"></span>'
+    + '<span class="vision-pointer__dot"></span>'
+    + '<span class="vision-pointer__label"></span>';
+  pointer.appendChild(reticle);
+  const label = reticle.querySelector('.vision-pointer__label');
+
+  const trails = [];
+  for (let i = 0; i < TRAIL_COUNT; i += 1) {
+    const dot = document.createElement('span');
+    dot.className = 'vision-pointer__trail';
+    dot.style.opacity = (0.4 * (1 - i / TRAIL_COUNT)).toFixed(2);
+    pointer.appendChild(dot);
+    trails.push({ el: dot, x: 0, y: 0 });
+  }
+
+  const ambient = reduceMotion ? null : document.createElement('div');
+  if (ambient) {
+    ambient.className = 'vision-ambient';
+    ambient.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(ambient);
+  }
+  document.body.appendChild(pointer);
+
+  let targetX = window.innerWidth / 2;
+  let targetY = window.innerHeight / 2;
+  let curX = targetX;
+  let curY = targetY;
+  let visible = false;
+  let started = false;
+
+  const setVisible = (state) => {
+    if (state === visible) return;
+    visible = state;
+    pointer.classList.toggle('is-visible', state);
+    if (ambient) ambient.classList.toggle('is-visible', state);
+  };
+
+  window.addEventListener('pointermove', (event) => {
+    if (event.pointerType === 'touch') { setVisible(false); return; }
+    targetX = event.clientX;
+    targetY = event.clientY;
+    if (!started) { started = true; curX = targetX; curY = targetY; }
+    setVisible(true);
+  }, { passive: true });
+
+  window.addEventListener('pointerdown', (event) => {
+    if (reduceMotion || event.pointerType === 'touch') return;
+    pointer.classList.add('vision-pointer--clicking');
+    setTimeout(() => pointer.classList.remove('vision-pointer--clicking'), 180);
+  }, { passive: true });
+
+  document.addEventListener('pointerover', (event) => {
+    const target = event.target.closest && event.target.closest(TARGETS);
+    if (target) {
+      label.textContent = labelFor(target);
+      pointer.classList.add('vision-pointer--active');
+    }
+  });
+  document.addEventListener('pointerout', (event) => {
+    const to = event.relatedTarget;
+    if (!to || !(to.closest && to.closest(TARGETS))) {
+      pointer.classList.remove('vision-pointer--active');
+    }
+  });
+
+  document.addEventListener('mouseout', (event) => { if (!event.relatedTarget) setVisible(false); });
+  window.addEventListener('blur', () => setVisible(false));
+
+  const loop = () => {
+    curX += (targetX - curX) * EASE;
+    curY += (targetY - curY) * EASE;
+    reticle.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
+    if (ambient) ambient.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
+    rootEl.style.setProperty('--pointer-x', `${curX}px`);
+    rootEl.style.setProperty('--pointer-y', `${curY}px`);
+    let px = curX;
+    let py = curY;
+    for (let i = 0; i < trails.length; i += 1) {
+      const t = trails[i];
+      t.x += (px - t.x) * 0.32;
+      t.y += (py - t.y) * 0.32;
+      t.el.style.transform = `translate3d(${t.x}px, ${t.y}px, 0)`;
+      px = t.x;
+      py = t.y;
+    }
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+})();

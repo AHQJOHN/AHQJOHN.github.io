@@ -517,3 +517,110 @@ button { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .reveal-ready .reveal { opacity: 1; transform: none; }
 }
+
+/* Vision pointer HUD */
+.vision-ambient {
+  position: fixed;
+  top: 0; left: 0;
+  width: 460px; height: 460px;
+  margin: -230px 0 0 -230px;
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, color-mix(in srgb, var(--cyan) 16%, transparent), color-mix(in srgb, var(--violet) 10%, transparent) 45%, transparent 70%);
+  mix-blend-mode: screen;
+  transition: opacity .5s ease;
+  will-change: transform;
+}
+.vision-ambient.is-visible { opacity: .9; }
+
+.vision-pointer {
+  position: fixed;
+  top: 0; left: 0;
+  width: 0; height: 0;
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s ease;
+}
+.vision-pointer.is-visible { opacity: 1; }
+
+.vision-pointer__reticle { position: absolute; top: 0; left: 0; will-change: transform; }
+.vision-pointer__reticle > * { position: absolute; top: 0; left: 0; transform: translate(-50%, -50%); }
+
+.vision-pointer__glow {
+  width: 118px; height: 118px; border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--cyan) 20%, transparent), transparent 66%);
+  filter: blur(2px);
+  mix-blend-mode: screen;
+}
+.vision-pointer__dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 9px color-mix(in srgb, var(--cyan) 85%, transparent);
+}
+.vision-pointer__ring {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--cyan) 52%, transparent);
+  transition: width .25s ease, height .25s ease, border-color .25s ease;
+}
+.vision-pointer__box {
+  width: 44px; height: 44px; opacity: .32;
+  transition: width .25s ease, height .25s ease, opacity .25s ease;
+  background:
+    linear-gradient(var(--cyan), var(--cyan)) 0 0 / 11px 1.5px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) 0 0 / 1.5px 11px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) 100% 0 / 11px 1.5px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) 100% 0 / 1.5px 11px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) 0 100% / 11px 1.5px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) 0 100% / 1.5px 11px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) 100% 100% / 11px 1.5px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) 100% 100% / 1.5px 11px no-repeat;
+}
+.vision-pointer__label {
+  top: 0; left: 0;
+  transform: translate(18px, -34px);
+  padding: 3px 7px;
+  font: 700 .56rem/1 var(--font-mono);
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  background: color-mix(in srgb, var(--panel-solid) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cyan) 34%, transparent);
+  border-radius: 5px;
+  white-space: nowrap;
+  opacity: 0;
+  backdrop-filter: blur(6px);
+  transition: opacity .2s ease;
+}
+.vision-pointer__trail {
+  position: absolute; top: 0; left: 0;
+  width: 6px; height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--cyan) 46%, transparent);
+  will-change: transform;
+}
+
+.vision-pointer--active .vision-pointer__ring { width: 46px; height: 46px; border-color: color-mix(in srgb, var(--cyan) 85%, transparent); }
+.vision-pointer--active .vision-pointer__box { width: 62px; height: 62px; opacity: .92; }
+.vision-pointer--active .vision-pointer__label { opacity: 1; }
+
+.vision-pointer--clicking .vision-pointer__ring { animation: vision-pulse .18s ease; }
+@keyframes vision-pulse {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  45% { transform: translate(-50%, -50%) scale(.62); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vision-ambient,
+  .vision-pointer__trail { display: none !important; }
+  .vision-pointer,
+  .vision-pointer__glow,
+  .vision-pointer__ring,
+  .vision-pointer__box,
+  .vision-pointer__label { transition: none !important; }
+  .vision-pointer--clicking .vision-pointer__ring { animation: none !important; }
+}
