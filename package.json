@@ -1,0 +1,13 @@
+{
+  "name": "portfolio-image-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local build tooling for optimizing portfolio images (responsive WebP + LQIP).",
+  "scripts": {
+    "optimize": "node tools/optimize-images.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  }
+}

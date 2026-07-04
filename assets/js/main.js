@@ -109,4 +109,17 @@
   });
 
   document.querySelectorAll('[data-year]').forEach((node) => { node.textContent = new Date().getFullYear(); });
+
+  // Progressive images: fade in each full-resolution image once it has loaded.
+  // The blurred LQIP placeholder stays visible until then. Errors also resolve
+  // so a failed/unsupported source never leaves an image stuck hidden.
+  document.querySelectorAll('img.progressive-img').forEach((img) => {
+    const reveal = () => img.classList.add('is-loaded');
+    if (img.complete && img.naturalWidth > 0) {
+      reveal();
+    } else {
+      img.addEventListener('load', reveal, { once: true });
+      img.addEventListener('error', reveal, { once: true });
+    }
+  });
 })();
